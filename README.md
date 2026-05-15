@@ -24,7 +24,7 @@ The labs included here are based on legal educational environments such as TryHa
 
 ### Web Security
 - SQL Injection
-<!--
+
 - Command Injection
 - IDOR
 - File Inclusion (LFI/RFI)
@@ -39,7 +39,7 @@ The labs included here are based on legal educational environments such as TryHa
 - Burp Suite
 - Nmap
 - Metasploit
--->
+
 ---
 
 ## Repository Structure
