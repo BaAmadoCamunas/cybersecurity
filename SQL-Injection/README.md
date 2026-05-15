@@ -233,6 +233,107 @@ This ensures that user input is treated strictly as data rather than executable 
 
 # 3. Blind SQL Injection – Authentication Bypass
 
+Blind SQL Injection occurs when the application does not directly return database errors or query results to the user.
+
+Even without visible feedback, it is still possible to manipulate SQL queries and infer whether an injection attempt was successful based on the application's behavior.
+
+---
+
+## Authentication Bypass
+
+One of the most common uses of Blind SQL Injection is bypassing authentication mechanisms such as login forms.
+
+In these scenarios, the objective is not to extract data directly from the database, but rather to manipulate the application's authentication logic to gain unauthorized access.
+
+---
+
+### Original query structure
+
+The login form sends user-controlled input to the following SQL query:
+
+```sql
+SELECT * FROM users
+WHERE username='%username%'
+AND password='%password%'
+LIMIT 1;
+```
+
+The application checks whether the query returns a valid user record.
+
+If the query returns `TRUE`, access is granted.
+
+---
+
+### SQL Injection payload
+
+The following payload was injected into the password field:
+
+```sql
+' OR 1=1;--
+```
+
+This modifies the SQL query into:
+
+```sql
+SELECT * FROM users
+WHERE username=''
+AND password=''
+OR 1=1;
+```
+
+Because `1=1` always evaluates to `TRUE`, the query returns a valid result regardless of the supplied credentials.
+
+As a result, the authentication check is bypassed.
+
+![Authentication bypass using OR 1=1](images/sqli_blind_login-payload.png)
+
+![Authentication bypass success](images/sqli_blind_authentication-bypass-success.png)
+
+---
+
+### Why this works
+
+The vulnerability exists because user-controlled input is directly concatenated into the SQL query without proper validation or parameterization.
+
+The injected payload alters the logic of the original query by introducing a condition that always evaluates to `TRUE`.
+
+This causes the database to return a successful authentication result even when invalid credentials are supplied.
+
+---
+
+### Vulnerable query example
+
+```python
+query = "SELECT * FROM users WHERE username='" + username + "' AND password='" + password + "'"
+```
+
+In this implementation, attackers can manipulate the SQL query structure by injecting SQL syntax into the input fields.
+
+---
+
+### Secure implementation
+
+Authentication queries should use parameterized statements instead of directly concatenating user input.
+
+Example:
+
+```python
+query = "SELECT * FROM users WHERE username=%s AND password=%s"
+cursor.execute(query, (username, password))
+```
+
+This prevents user input from being interpreted as executable SQL code.
+
+---
+
+### Security Impact
+
+Authentication bypass vulnerabilities can allow attackers to:
+
+- Access restricted areas of the application
+- Impersonate legitimate users
+- Escalate privileges
+- Gain unauthorized access to sensitive data
 
 ---
 
