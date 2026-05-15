@@ -33,6 +33,15 @@ SQL Injection can allow attackers to:
 
 # 2. In-Band SQL Injection
 
+In-Band SQL Injection is a type of SQL Injection where both the exploitation and data retrieval occur through the same communication channel (e.g., HTTP response).
+
+This makes it one of the easiest types of SQL Injection to detect and exploit.
+
+It is commonly divided into:
+
+- Error-Based SQL Injection
+- Union-Based SQL Injection
+
 ---
 
 # 3. Blind SQL Injection – Authentication Bypass
