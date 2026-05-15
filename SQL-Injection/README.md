@@ -42,6 +42,45 @@ It is commonly divided into:
 - Error-Based SQL Injection
 - Union-Based SQL Injection
 
+
+## 2.1 Error-Based SQL Injection
+
+Error-based SQL Injection relies on forcing the database to return error messages that reveal information about its structure.
+
+---
+
+### Detection
+
+The vulnerability was identified in the `id` parameter of the following endpoint:
+
+```
+https://website.thm/article?id=1
+```
+
+To test for SQL Injection, a single quote (`'`) was injected into the parameter:
+
+```
+https://website.thm/article?id=1'
+```
+
+This caused a database error, confirming that the input is directly included in a SQL query without proper sanitization.
+
+---
+
+### Evidence
+
+**Capture: `sqli_error_id_param_1_quote.png`**
+
+The application returns a SQL syntax error when malformed input is provided.
+
+---
+
+### Explanation
+
+The error occurs because the application concatenates user input directly into an SQL query. When the query structure is broken using special characters (such as `'`), the database returns an error message that leaks internal information.
+
+This confirms the existence of an Error-Based SQL Injection vulnerability.
+
 ---
 
 # 3. Blind SQL Injection – Authentication Bypass
