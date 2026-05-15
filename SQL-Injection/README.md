@@ -69,7 +69,7 @@ This caused a database error, confirming that the input is directly included in 
 
 ### Evidence
 
-**Capture: `sqli_error_id_param_1_quote.png`**
+![SQL error when injecting single quote](images/sqli_error_id_param_1_quote.png)
 
 The application returns a SQL syntax error when malformed input is provided.
 
@@ -80,6 +80,12 @@ The application returns a SQL syntax error when malformed input is provided.
 The error occurs because the application concatenates user input directly into an SQL query. When the query structure is broken using special characters (such as `'`), the database returns an error message that leaks internal information.
 
 This confirms the existence of an Error-Based SQL Injection vulnerability.
+
+---
+
+### Security Impact
+
+Error messages from the database can expose internal structure and help attackers enumerate the database schema.
 
 ---
 
