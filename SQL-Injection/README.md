@@ -230,7 +230,7 @@ In these scenarios, the objective is not to extract data directly from the datab
 
 ---
 
-### Original query structure
+## Original query structure
 
 The login form sends user-controlled input to the following SQL query:
 
@@ -247,7 +247,7 @@ If the query returns `TRUE`, access is granted.
 
 ---
 
-### SQL Injection payload
+## SQL Injection payload
 
 The following payload was injected into the password field:
 
@@ -274,7 +274,7 @@ As a result, the authentication check is bypassed.
 
 ---
 
-### Why this works
+## Why this works
 
 The vulnerability exists because user-controlled input is directly concatenated into the SQL query without proper validation or parameterization.
 
@@ -284,7 +284,7 @@ This causes the database to return a successful authentication result even when 
 
 ---
 
-### Security Impact
+## Security Impact
 
 Authentication bypass vulnerabilities can allow attackers to:
 
