@@ -1,7 +1,4 @@
 
-Write-up in progress...
-
-
 # SQL Injection (SQLi)
 
 SQL Injection is a web application vulnerability that occurs when user input is directly included in SQL queries without proper sanitization or parameterization.
