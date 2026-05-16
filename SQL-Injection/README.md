@@ -543,6 +543,140 @@ Boolean-Based Blind SQL Injection can allow attackers to:
 
 # 5. Blind SQL Injection – Time-Based
 
+Time-Based Blind SQL Injection relies on measuring server response times to determine whether an injected SQL query evaluates to `TRUE` or `FALSE`.
+
+Unlike Boolean-Based SQL Injection, no visual indication is returned by the application. Instead, successful payloads introduce an intentional delay using functions such as `SLEEP()`.
+
+---
+
+## Concept
+
+The attacker injects SQL conditions that trigger a time delay only when the injected statement is valid.
+
+If the server response is delayed, the attacker can infer that the condition evaluated to `TRUE`.
+
+If there is no delay, the condition evaluated to `FALSE`.
+
+---
+
+## Identifying the number of columns
+
+The `SLEEP()` function was used together with `UNION SELECT` to determine the correct number of columns required by the query.
+
+Initial payload:
+
+```sql
+admin123' UNION SELECT SLEEP(5);--
+```
+
+No delay was observed, indicating that the query structure was invalid.
+
+A second payload was tested:
+
+```sql
+admin123' UNION SELECT SLEEP(5),2;--
+```
+
+This time, the server response was delayed by approximately five seconds, confirming that the query required two columns.
+
+![Time-based column enumeration](images/sqli_time_column-enumeration1.png)
+
+![Time-based column enumeration](images/sqli_time_column-enumeration2.png)
+
+---
+
+## Enumerating database information
+
+The same inference logic used in Boolean-Based SQL Injection was applied, but this time using response delays instead of visual boolean responses.
+
+Example payload:
+
+```sql
+admin123' UNION SELECT SLEEP(5),2
+WHERE database() LIKE 'u%';--
+```
+
+If the response was delayed, the condition evaluated to `TRUE`.
+
+This technique allows attackers to enumerate database names character by character.
+
+![Database enumeration using delays](images/sqli_time_database-enumeration.png)
+
+---
+
+## Enumerating tables and columns
+
+The `information_schema` database can also be queried using time-based conditions.
+
+Example payload:
+
+```sql
+admin123' UNION SELECT SLEEP(5),2
+FROM information_schema.tables
+WHERE table_schema='sqli_four'
+AND table_name LIKE 'u%';--
+```
+
+Delays in server responses confirmed the existence of matching table names.
+
+The same technique can be applied to enumerate column names and eventually extract credentials.
+
+![Time-based table enumeration](images/sqli_time_table-enumeration.png)
+
+![Time-based table enumeration](images/sqli_time_table-enumeration2.png)
+
+---
+
+## Why this works
+
+Even though the application does not display database errors or query results, attackers can still infer information through measurable response delays.
+
+The database executes the `SLEEP()` function only when the injected SQL condition evaluates successfully.
+
+This creates a side-channel that leaks information about the database structure and contents.
+
+---
+
+## Vulnerable query example
+
+```python
+query = "SELECT * FROM users WHERE username='" + username + "'"
+```
+
+Because user input is directly concatenated into the SQL query, attackers can inject arbitrary SQL logic and delay functions.
+
+---
+
+## Secure implementation
+
+Parameterized queries should always be used to separate user input from executable SQL code.
+
+Example:
+
+```python
+query = "SELECT * FROM users WHERE username=%s"
+cursor.execute(query, (username,))
+```
+
+Additional mitigations include:
+
+- Input validation
+- Web Application Firewalls (WAF)
+- Query timeout restrictions
+- Least privilege database accounts
+
+---
+
+## Security Impact
+
+Time-Based Blind SQL Injection can allow attackers to:
+
+- Enumerate databases without visible output
+- Extract sensitive information
+- Identify valid credentials
+- Bypass security controls
+- Perform stealthier attacks compared to error-based SQL Injection
+  
 ---
 
 # 6. Out-of-Band SQL Injection
