@@ -20,7 +20,7 @@ SQL Injection (SQLi) happens when an application fails to properly validate user
 - Lack of parameterized queries (prepared statements)
 - Trusting client-side input
 
-## Impact
+## Security Impact
 
 SQL Injection can allow attackers to:
 
@@ -202,32 +202,18 @@ The vulnerability exists because the application directly concatenates user-cont
 
 As a result, attackers can manipulate the structure of the original query and inject additional SQL statements such as `UNION SELECT`.
 
---- 
-
-### Vulnerable query example
-
-```sql
-SELECT title, description, author
-FROM articles
-WHERE id = '$id';
-```
-
-If user input is not sanitized, attackers can inject arbitrary SQL statements into the query.
-
 ---
 
-### Secure implementation
+### Security Impact
 
-Parameterized queries (prepared statements) should be used instead of dynamically building SQL queries.
+Union-Based SQL Injection can allow attackers to:
 
-Example:
-
-```python
-query = "SELECT title, description, author FROM articles WHERE id = %s"
-cursor.execute(query, (user_input,))
-```
-
-This ensures that user input is treated strictly as data rather than executable SQL syntax.
+- Enumerate database structures
+- Discover table and column names
+- Extract sensitive information
+- Retrieve usernames and passwords
+- Access confidential application data
+- Potentially escalate attacks depending on database privileges
 
 ---
 
@@ -298,31 +284,6 @@ The vulnerability exists because user-controlled input is directly concatenated 
 The injected payload alters the logic of the original query by introducing a condition that always evaluates to `TRUE`.
 
 This causes the database to return a successful authentication result even when invalid credentials are supplied.
-
----
-
-### Vulnerable query example
-
-```python
-query = "SELECT * FROM users WHERE username='" + username + "' AND password='" + password + "'"
-```
-
-In this implementation, attackers can manipulate the SQL query structure by injecting SQL syntax into the input fields.
-
----
-
-### Secure implementation
-
-Authentication queries should use parameterized statements instead of directly concatenating user input.
-
-Example:
-
-```python
-query = "SELECT * FROM users WHERE username=%s AND password=%s"
-cursor.execute(query, (username, password))
-```
-
-This prevents user input from being interpreted as executable SQL code.
 
 ---
 
@@ -504,31 +465,6 @@ Attackers can leverage these boolean responses to infer database structure and c
 
 ---
 
-## Vulnerable query example
-
-```python
-query = "SELECT * FROM users WHERE username='" + username + "'"
-```
-
-Because user input is directly concatenated into the query, attackers can inject additional SQL logic into the statement.
-
----
-
-## Secure implementation
-
-Parameterized queries should be used to prevent user input from altering SQL query logic.
-
-Example:
-
-```python
-query = "SELECT * FROM users WHERE username=%s"
-cursor.execute(query, (username,))
-```
-
-Input validation and proper error handling should also be implemented to reduce information leakage.
-
----
-
 ## Security Impact
 
 Boolean-Based Blind SQL Injection can allow attackers to:
@@ -637,36 +573,6 @@ This creates a side-channel that leaks information about the database structure 
 
 ---
 
-## Vulnerable query example
-
-```python
-query = "SELECT * FROM users WHERE username='" + username + "'"
-```
-
-Because user input is directly concatenated into the SQL query, attackers can inject arbitrary SQL logic and delay functions.
-
----
-
-## Secure implementation
-
-Parameterized queries should always be used to separate user input from executable SQL code.
-
-Example:
-
-```python
-query = "SELECT * FROM users WHERE username=%s"
-cursor.execute(query, (username,))
-```
-
-Additional mitigations include:
-
-- Input validation
-- Web Application Firewalls (WAF)
-- Query timeout restrictions
-- Least privilege database accounts
-
----
-
 ## Security Impact
 
 Time-Based Blind SQL Injection can allow attackers to:
@@ -679,14 +585,115 @@ Time-Based Blind SQL Injection can allow attackers to:
   
 ---
 
-# 6. Out-of-Band SQL Injection
+# 7. Mitigations
+
+SQL Injection vulnerabilities can be mitigated through secure coding practices, proper input handling and defensive database configurations.
 
 ---
 
-# 7. Impact of SQL Injection
+## Prepared Statements (Parameterized Queries)
+
+Prepared statements separate SQL logic from user-controlled input.
+
+This prevents attackers from modifying the structure of SQL queries, as input values are treated strictly as data rather than executable SQL code.
+
+### Vulnerable example
+
+```python
+query = "SELECT * FROM users WHERE username='" + username + "'"
+```
+
+### Secure implementation
+
+```python
+query = "SELECT * FROM users WHERE username=%s"
+cursor.execute(query, (username,))
+```
+
+Parameterized queries are one of the most effective defenses against SQL Injection vulnerabilities.
 
 ---
 
-# 8. Mitigations
+## Input Validation
+
+Applications should validate and restrict user input whenever possible.
+
+Allow lists can be used to ensure that only expected characters, formats or values are accepted.
+
+Examples include:
+
+- Numeric-only identifiers
+- Restricted character sets
+- Length limitations
+- Expected input formats
+
+Input validation reduces the attack surface and helps prevent malicious payloads from reaching the database layer.
+
+---
+
+## Escaping User Input
+
+Special characters such as:
+
+```text
+' " ; -- \
+```
+
+can alter SQL query structure if not properly handled.
+
+Escaping user input ensures these characters are interpreted as plain text instead of executable SQL syntax.
+
+However, escaping alone should not be considered a sufficient defense against SQL Injection.
+
+Prepared statements should always be prioritized.
+
+---
+
+## Principle of Least Privilege
+
+Database accounts used by applications should operate with the minimum privileges required.
+
+For example:
+
+- Read-only accounts should not have write permissions
+- Application accounts should not have administrative privileges
+- Sensitive operations should be isolated when possible
+
+Limiting database permissions reduces the impact of successful SQL Injection attacks.
+
+---
+
+## Error Handling
+
+Applications should avoid exposing raw database errors to users.
+
+Detailed SQL error messages can reveal:
+
+- Database structure
+- Table names
+- Column names
+- Query syntax
+
+Errors should instead be logged securely on the server side while displaying generic messages to users.
+
+---
+
+## Additional Security Measures
+
+Additional protections may include:
+
+- Web Application Firewalls (WAFs)
+- ORM frameworks
+- Query timeout restrictions
+- Security monitoring and logging
+- Regular security testing and code reviews
+
+---
+
+## Final Notes
+
+SQL Injection remains one of the most critical web application vulnerabilities due to its potential impact and prevalence.
+
+Secure query handling, proper validation and defensive programming practices are essential to protecting modern applications against SQL Injection attacks.
 
 
