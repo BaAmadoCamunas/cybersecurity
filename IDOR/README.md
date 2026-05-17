@@ -1,7 +1,5 @@
 # IDOR (Insecure Direct Object Reference)
 
-Write-up in progress...
-
 ---
 
 # 1. Introduction
@@ -20,19 +18,6 @@ If the application trusts user-controlled input without validating ownership ser
 
 ---
 
-## Why it happens
-
-IDOR vulnerabilities commonly occur because:
-
-- Applications trust client-side input
-- Authorization checks are missing
-- Object identifiers are predictable
-- Access control is only enforced on the client side
-
-Unlike authentication vulnerabilities, IDOR issues usually occur after a user has already logged into the application.
-
----
-
 ## Authentication vs Authorization
 
 Authentication verifies who the user is.
@@ -40,19 +25,6 @@ Authentication verifies who the user is.
 Authorization verifies what the user is allowed to access.
 
 In many IDOR vulnerabilities, the application correctly authenticates the user but fails to validate whether the authenticated user is authorized to access the requested resource.
-
----
-
-## Security Impact
-
-IDOR vulnerabilities can allow attackers to:
-
-- Access sensitive information
-- Enumerate user data
-- Perform horizontal privilege escalation
-- Access private documents or files
-- Abuse API endpoints
-- Potentially compromise user accounts
 
 ---
 
@@ -256,5 +228,99 @@ The application failed to validate whether the authenticated user was authorized
 This confirmed the presence of an Insecure Direct Object Reference (IDOR) vulnerability.
 
 ![Unauthorized access to another user's data](images/idor_unauthorized-access.png)
+
+---
+
+# 4. Why this works
+
+## Authentication vs Authorization
+
+The application correctly authenticated the user but failed to verify whether the authenticated user was authorized to access the requested resource.
+
+Although the user was logged into the application, the backend did not validate ownership of the requested object before returning sensitive data.
+
+---
+
+## Missing Server-Side Validation
+
+The API trusted the user-controlled `id` parameter without performing proper authorization checks on the server side.
+
+As a result, attackers could manipulate object references and retrieve resources belonging to other users.
+
+---
+
+## Trusting User-Controlled Input
+
+The application relied directly on user-supplied identifiers to retrieve sensitive account information.
+
+Because object references were predictable and insufficiently validated, attackers could enumerate additional users and access unauthorized data.
+
+---
+
+# 5. Security Impact
+
+IDOR vulnerabilities can expose sensitive application data and compromise user privacy.
+
+Potential impacts include:
+
+- Unauthorized access to user accounts
+- Exposure of personal information
+- Horizontal privilege escalation
+- Large-scale user enumeration
+- API abuse
+- Data leakage
+
+In real-world applications, IDOR vulnerabilities frequently affect APIs and internal backend services, making them particularly dangerous in modern web environments.
+
+---
+
+# 6. Remediation
+
+## Server-Side Authorization Checks
+
+Applications should validate on the server side whether the authenticated user is authorized to access the requested resource.
+
+Authorization checks must never rely exclusively on client-side controls.
+
+---
+
+## Avoid Trusting User-Controlled Input
+
+Applications should avoid directly exposing internal object references whenever possible.
+
+User-controlled identifiers should never determine access permissions by themselves.
+
+---
+
+## Use Indirect Object References
+
+Indirect references such as UUIDs can reduce predictability and make enumeration attacks more difficult.
+
+However, UUIDs do not replace proper authorization checks.
+
+---
+
+## Implement Access Control Validation
+
+Access control should be enforced consistently across:
+
+- API endpoints
+- AJAX requests
+- Internal services
+- Backend functionality
+
+---
+
+## Principle of Least Privilege
+
+Applications and backend services should follow the principle of least privilege to reduce the impact of authorization failures.
+
+---
+
+# 7. Final Notes
+
+This room demonstrated how insecure object references can expose sensitive information when authorization controls are improperly implemented.
+
+Although IDOR vulnerabilities may appear simple, they remain one of the most common and impactful access control issues in modern web applications and APIs.
 
 ---
