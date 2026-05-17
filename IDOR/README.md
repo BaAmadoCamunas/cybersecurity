@@ -186,3 +186,75 @@ Applications may unintentionally expose undocumented parameters or internal API 
 This makes API inspection and parameter analysis important techniques during IDOR testing.
 
 ---
+
+# 3. Practical Exploitation
+
+## 3.1 Application Overview
+
+The target application included a customer account section where authenticated users could view and modify account information such as:
+
+- Username
+- Email address
+- Password
+
+After creating an account and logging into the application, the "Your Account" page displayed the current user's information.
+
+![Customer account page](images/idor_account-page.png)
+
+---
+
+## 3.2 Identifying the API Request
+
+Browser Developer Tools were used to inspect how the application retrieved account information.
+
+By monitoring the Network tab and refreshing the page, an API request was identified:
+
+```http
+/api/v1/customer?id={user_id}
+```
+
+The endpoint returned user information in JSON format, including:
+
+- User ID
+- Username
+- Email address
+
+This indicated that the application relied on a user-controlled `id` parameter to retrieve account data.
+
+![API request identified in Network tab](images/idor_network_api-request.png)
+
+---
+
+## 3.3 Manipulating the ID Parameter
+
+The `id` parameter was manually modified to test whether the application properly validated ownership of the requested resource.
+
+Original request:
+
+```http
+/api/v1/customer?id=50
+```
+
+Modified request:
+
+```http
+/api/v1/customer?id=1
+```
+
+The server responded successfully and returned another user's account information.
+
+![Manual ID manipulation](images/idor_parameter-manipulation.png)
+
+---
+
+## 3.4 Accessing Unauthorized Data
+
+By modifying the identifier value, it was possible to access sensitive information belonging to other users.
+
+The application failed to validate whether the authenticated user was authorized to access the requested resource.
+
+This confirmed the presence of an Insecure Direct Object Reference (IDOR) vulnerability.
+
+![Unauthorized access to another user's data](images/idor_unauthorized-access.png)
+
+---
