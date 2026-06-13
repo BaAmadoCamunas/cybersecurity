@@ -1,20 +1,17 @@
-# Phishing Analysis
+# Threat Intelligence
 
-This section focuses on investigating phishing attacks through email analysis, link inspection and threat intelligence techniques.
+This section focuses on enriching and analyzing indicators of compromise (IOCs) using threat intelligence techniques.
 
 ## Overview
 
-The goal of this section is to simulate real SOC phishing investigations, identifying malicious emails and extracting indicators of compromise (IOCs).
+The goal is to understand how SOC analysts use external data sources to contextualize and investigate potential threats.
 
 Topics may include:
-- Email header analysis
-- Malicious URL investigation
-- IOC extraction and enrichment
-- Phishing campaign analysis
+- IP and domain analysis
+- File and hash reputation
+- IOC enrichment
+- Threat context analysis
 
 ## Status
 
 Work in progress. Write-ups will be added as they are completed.
-
-
-
