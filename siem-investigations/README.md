@@ -1,16 +1,16 @@
-# Phishing Analysis
+# SIEM Investigations
 
-This section focuses on investigating phishing attacks through email analysis, link inspection and threat intelligence techniques.
+This section focuses on investigating security alerts using SIEM platforms such as Splunk and Elastic Stack.
 
 ## Overview
 
-The goal of this section is to simulate real SOC phishing investigations, identifying malicious emails and extracting indicators of compromise (IOCs).
+The goal is to analyze logs, correlate events, and triage alerts in order to identify potential security incidents.
 
 Topics may include:
-- Email header analysis
-- Malicious URL investigation
-- IOC extraction and enrichment
-- Phishing campaign analysis
+- Alert triage and investigation
+- Log correlation
+- Splunk-based analysis
+- Elastic Stack investigations
 
 ## Status
 
