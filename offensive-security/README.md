@@ -1,4 +1,4 @@
-# Cybersecurity Write-Ups
+# Offensive-security Write-Ups
 
 Practical cybersecurity labs and write-ups focused on web application security, vulnerability analysis and offensive security fundamentals.
 
