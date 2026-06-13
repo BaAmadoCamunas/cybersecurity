@@ -1,20 +1,19 @@
-# Phishing Analysis
+# Network Security
 
-This section focuses on investigating phishing attacks through email analysis, link inspection and threat intelligence techniques.
+This section contains network-based security investigations focused on traffic analysis and intrusion detection.
 
 ## Overview
 
-The goal of this section is to simulate real SOC phishing investigations, identifying malicious emails and extracting indicators of compromise (IOCs).
+The goal is to understand how malicious activity appears in network traffic and how SOC analysts detect anomalies using network tools.
 
 Topics may include:
-- Email header analysis
-- Malicious URL investigation
-- IOC extraction and enrichment
-- Phishing campaign analysis
+- Packet analysis (Wireshark)
+- Network traffic inspection
+- IDS concepts and detection
+- Network anomaly detection
 
 ## Status
 
 Work in progress. Write-ups will be added as they are completed.
-
 
 
