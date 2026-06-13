@@ -1,16 +1,17 @@
-# Phishing Analysis
+# Incident Response
 
-This section focuses on investigating phishing attacks through email analysis, link inspection and threat intelligence techniques.
+This section contains full-scale security investigations simulating real-world cyber incidents.
 
 ## Overview
 
-The goal of this section is to simulate real SOC phishing investigations, identifying malicious emails and extracting indicators of compromise (IOCs).
+The goal is to apply SOC skills to investigate complete attack chains, build timelines, and determine impact.
 
 Topics may include:
-- Email header analysis
-- Malicious URL investigation
-- IOC extraction and enrichment
-- Phishing campaign analysis
+- Incident investigation workflows
+- Timeline reconstruction
+- IOC correlation
+- MITRE ATT&CK mapping
+- Containment and mitigation strategies
 
 ## Status
 
