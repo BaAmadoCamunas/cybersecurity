@@ -1,19 +1,21 @@
 # Cybersecurity Write-Ups
 
-Practical cybersecurity labs and write-ups focused on web security, privilege escalation and offensive security techniques.
+Practical cybersecurity labs and write-ups focused on web application security, vulnerability analysis and offensive security fundamentals.
 
 ---
 
 ## About
 
-This repository contains practical cybersecurity write-ups and lab notes created while studying offensive and defensive security concepts.
+This repository contains practical cybersecurity write-ups and lab notes created while studying offensive security concepts in legal training environments.
+
+> This section currently focuses on foundational web application vulnerabilities and their exploitation in controlled environments.
 
 The main goal of this repository is to document:
 
 - Web application vulnerabilities
-- Privilege escalation techniques
 - Enumeration methodologies
 - Practical exploitation workflows
+- Vulnerability impact assessment
 - Security mitigation strategies
 
 The labs included here are based on legal educational environments such as TryHackMe.
@@ -23,55 +25,35 @@ The labs included here are based on legal educational environments such as TryHa
 ## Topics Covered
 
 ### Web Security
+
 - SQL Injection
+- Insecure Direct Object References (IDOR)
 
-- Command Injection
-- IDOR
-- File Inclusion (LFI/RFI)
-- Authentication Bypass
-- Burp Suite Intruder
+### Offensive Security Concepts
 
-### Privilege Escalation
-- Linux Privilege Escalation
-- Windows Privilege Escalation
+- Web Application Testing Fundamentals
+- Enumeration Methodologies
+- Exploitation Workflows
+- Security Mitigation Strategies
 
 ### Offensive Security Tools
+
 - Burp Suite
-- Nmap
-- Metasploit
+- Linux
+- SQL
 
 ---
 
 ## Repository Structure
 
 ```plaintext
-cybersecurity-writeups/
+offensive-security/
 │
-├── SQL-Injection/
+├── sql-injection/
 │   ├── README.md
 │   └── images/
 │
-├── Command-Injection/
-│   ├── README.md
-│   └── images/
-│
-├── IDOR/
-│   ├── README.md
-│   └── images/
-│
-├── File-Inclusion/
-│   ├── README.md
-│   └── images/
-│
-├── Linux-Privilege-Escalation/
-│   ├── README.md
-│   └── images/
-│
-├── Windows-Privilege-Escalation/
-│   ├── README.md
-│   └── images/
-│
-├── Burp-Intruder/
+├── idor/
 │   ├── README.md
 │   └── images/
 │
@@ -82,31 +64,30 @@ cybersecurity-writeups/
 
 ## Write-Up Structure
 
-Each write-up generally follows the same methodology:
+Each write-up follows a structured methodology:
 
-1. Objective
-2. Reconnaissance
-3. Enumeration
-4. Exploitation
-5. Impact
-6. Mitigation
-7. Conclusion
+1. Objective  
+2. Reconnaissance  
+3. Enumeration  
+4. Exploitation  
+5. Impact  
+6. Mitigation  
+7. Conclusion  
 
 The goal is not only to reproduce exploitation steps, but also to understand why the vulnerability exists and how it can be mitigated.
 
 ---
 
+
 ## Technologies and Tools
 
-- Python
-- Linux
-- Burp Suite
-- Nmap
-- Metasploit
-- SQL
-- Bash
+- Burp Suite  
+- Linux  
+- SQL  
+- Web Browser Developer Tools  
 
 ---
+
 
 ## Disclaimer
 
@@ -118,4 +99,4 @@ This repository does not promote unauthorized access or malicious activities.
 
 ## Author
 
-Cybersecurity student focused on SOC and defensive security, currently complementing my training with practical offensive security labs and vulnerability research.
+Cybersecurity student focused on SOC operations, threat detection and incident investigation, currently complementing defensive security training with foundational offensive security labs.
