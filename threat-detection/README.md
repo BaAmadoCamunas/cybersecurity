@@ -1,20 +1,19 @@
-# Phishing Analysis
+# Threat Detection
 
-This section focuses on investigating phishing attacks through email analysis, link inspection and threat intelligence techniques.
+This section focuses on detecting malicious activity across endpoints, web applications and system logs.
 
 ## Overview
 
-The goal of this section is to simulate real SOC phishing investigations, identifying malicious emails and extracting indicators of compromise (IOCs).
+The goal is to build practical SOC detection skills by analyzing logs and identifying suspicious or malicious behaviour.
 
 Topics may include:
-- Email header analysis
-- Malicious URL investigation
-- IOC extraction and enrichment
-- Phishing campaign analysis
+- Windows security monitoring
+- Linux log analysis
+- Web attack detection
+- Endpoint detection techniques
 
 ## Status
 
 Work in progress. Write-ups will be added as they are completed.
-
 
 
