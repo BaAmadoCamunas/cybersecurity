@@ -1,3 +1,0 @@
-# Burp Suite Intruder
-
-Write-up in progress...

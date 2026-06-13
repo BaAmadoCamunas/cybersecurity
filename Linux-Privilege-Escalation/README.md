@@ -1,3 +1,0 @@
-# Linux Privilege Escalation
-
-Write-up in progress...
