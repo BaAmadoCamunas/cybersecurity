@@ -93,10 +93,3 @@ The goal is not only to reproduce exploitation steps, but also to understand why
 
 All activities documented in this repository were performed in legal lab environments intended for educational purposes only.
 
-This repository does not promote unauthorized access or malicious activities.
-
----
-
-## Author
-
-Cybersecurity student focused on SOC operations, threat detection and incident investigation, currently complementing defensive security training with foundational offensive security labs.
