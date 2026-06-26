@@ -175,3 +175,59 @@ Compressed attachments are commonly used in phishing campaigns to bypass email f
 ![VirusTotal Analysis](images/virustotal-analysis.png)
 
 ---
+
+# 5. Indicators of Compromise (IOCs)
+
+| Type | Value |
+|--------|--------|
+| Sender Email | info@mutawamarine.com |
+| Reply-To Email | info.mutawamarine@mail.com |
+| Originating IP | 192.119.71.157 |
+| Hosting Provider | HostPapa |
+| SHA256 | 2e91c533615a9bb8929ac4bb76707b2444597ce063d84a4b33525e25074fff3f |
+| File Type | ZIP Archive |
+
+---
+
+# 6. Findings
+
+The investigation identified multiple indicators commonly associated with phishing attacks.
+
+Key observations included:
+
+- An unsolicited financial request.
+- A mismatch between the sender and Reply-To domains.
+- The use of externally hosted email infrastructure.
+- A compressed attachment requiring further validation.
+
+The combination of these indicators significantly reduced confidence in the legitimacy of the message.
+
+Based on the available evidence, the email should be considered a phishing attempt.
+
+---
+
+# 7. Mitigation Recommendations
+
+- Do not interact with the attachment.
+- Block or monitor the identified indicators of compromise.
+- Notify affected users of the phishing attempt.
+- Review email authentication policies (SPF, DKIM and DMARC).
+- Implement user awareness training focused on phishing detection.
+- Monitor for additional emails originating from related infrastructure.
+
+---
+
+# 8. Lessons Learned
+
+This research highlighted the importance of examining email headers, authentication logs and attachment metadata when analyzing suspicious emails.
+
+Key skills practiced during this exercise included:
+
+- Email header analysis
+- SPF and DMARC validation
+- Threat intelligence enrichment
+- Attachment investigation
+- IOC identification
+- Phishing detection methodologies
+
+These techniques are fundamental for SOC analysts responsible for investigating phishing reports and email-based threats.
