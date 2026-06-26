@@ -57,7 +57,7 @@ Initial inspection of the email revealed the following information:
 
 ## 4.2. Sender Analysis
 
-The sender presented themselves as **Mr. James Jackson** using the email address:
+The sender introduced himself as **Mr. James Jackson** using the email address:
 
 ```text
 info@mutawamarine.com
