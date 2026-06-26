@@ -104,3 +104,74 @@ Email routing information is useful because it can reveal the infrastructure res
 ![Email Headers](images/email-headers.png)
 
 ---
+
+## 4.5. Infrastructure Investigation
+
+The originating IP address was investigated using publicly available IP intelligence sources.
+
+| Artifact | Value |
+|-----------|---------|
+| IP Address | 192.119.71.157 |
+| Hosting Provider | HostPapa |
+
+The infrastructure was identified as belonging to HostPapa.
+
+While the use of a hosting provider is not inherently malicious, phishing campaigns frequently leverage third-party hosting services to distribute fraudulent emails and obscure attribution.
+
+![IP Lookup](images/ip-lookup.png)
+
+---
+
+## 4.6. SPF Analysis
+
+The Return-Path domain was investigated to determine whether its email infrastructure was authorized to send messages on behalf of the domain.
+
+A DNS lookup was performed to retrieve the SPF record associated with the domain.
+
+```text
+v=spf1 include:spf.protection.outlook.com -all
+```
+
+SPF (Sender Policy Framework) helps prevent sender spoofing by defining which mail servers are authorized to send email for a domain.
+
+![SPF Lookup](images/spf-lookup.png)
+
+---
+
+## 4.7. DMARC Analysis
+
+A DMARC lookup was performed against the Return-Path domain to evaluate its email authentication policy.
+
+```text
+v=DMARC1; p=quarantine; fo=1
+```
+
+DMARC (Domain-based Message Authentication, Reporting and Conformance) enables domain owners to define how receiving mail servers should handle messages that fail SPF or DKIM validation.
+
+The presence and configuration of a DMARC policy can provide additional context when assessing the legitimacy of an email.
+
+![DMARC Lookup](images/dmarc-lookup.png)
+
+---
+
+## 4.8. Attachment Analysis
+
+The attachment was extracted and analyzed as part of the investigation.
+
+A SHA256 hash was generated to uniquely identify the file and support threat intelligence enrichment.
+
+![SHA256 hash](images/sha256-hash.png)
+
+The hash was submitted to VirusTotal, where additional metadata about the file was obtained.
+
+| Artifact | Value |
+|-----------|---------|
+| SHA256 | [2e91c533615a9bb8929ac4bb76707b2444597ce063d84a4b33525e25074fff3f] |
+| File Type | ZIP Archive |
+| File Size | [400.26 KB] |
+
+Compressed attachments are commonly used in phishing campaigns to bypass email filtering controls and conceal potentially malicious payloads.
+
+![VirusTotal Analysis](images/virustotal-analysis.png)
+
+---
