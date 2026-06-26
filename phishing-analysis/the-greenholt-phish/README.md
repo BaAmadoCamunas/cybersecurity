@@ -166,9 +166,9 @@ The hash was submitted to VirusTotal, where additional metadata about the file w
 
 | Artifact | Value |
 |-----------|---------|
-| SHA256 | [2e91c533615a9bb8929ac4bb76707b2444597ce063d84a4b33525e25074fff3f] |
+| SHA256 | 2e91c533615a9bb8929ac4bb76707b2444597ce063d84a4b33525e25074fff3f |
 | File Type | ZIP Archive |
-| File Size | [400.26 KB] |
+| File Size | 400.26 KB |
 
 Compressed attachments are commonly used in phishing campaigns to bypass email filtering controls and conceal potentially malicious payloads.
 
