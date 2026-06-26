@@ -1,20 +1,24 @@
-# Phishing Analysis
+# The Greenholt Phish
 
-This section focuses on investigating phishing attacks through email analysis, link inspection and threat intelligence techniques.
+## Scenario Overview
 
-## Overview
+A sales executive at Greenholt PLC reported a suspicious email allegedly received from a known customer. The employee noticed several unusual characteristics, including a generic greeting, an unexpected request involving a financial transaction and an unsolicited attachment. According to the recipient, these elements did not match the customer's normal communication patterns.
 
-The goal of this section is to simulate real SOC phishing investigations, identifying malicious emails and extracting indicators of compromise (IOCs).
+Due to the potential risk of phishing or business email compromise (BEC), the email was escalated to the Security Operations Center (SOC) for further analysis.
 
-Topics may include:
-- Email header analysis
-- Malicious URL investigation
-- IOC extraction and enrichment
-- Phishing campaign analysis
+The objective of this investigation was to determine whether the email was legitimate or malicious by examining its contents, verifying its origin and identifying any indicators of compromise (IOCs).
 
-## Status
+---
 
-Work in progress. Write-ups will be added as they are completed.
+## Investigation Objectives
+
+- Analyze the email and extract relevant artifacts.
+- Verify the authenticity and origin of the message.
+- Identify indicators commonly associated with phishing activity.
+- Assess the attachment and any suspicious content.
+- Determine the overall risk posed by the email.
+
+---
 
 
 
