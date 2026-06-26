@@ -50,6 +50,7 @@ Initial inspection of the email revealed the following information:
 | Sender Address | info@mutawamarine.com |
 | Reply-To Address | info.mutawamarine@mail.com |
 
+---
 ![Email Overview](images/email-overview.png)
 
 ---
