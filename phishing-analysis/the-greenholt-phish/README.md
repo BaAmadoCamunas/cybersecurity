@@ -1,6 +1,6 @@
 # The Greenholt Phish
 
-# 1.Scenario Overview
+# 1. Scenario Overview
 
 A sales executive at Greenholt PLC reported a suspicious email allegedly received from a known customer. The employee noticed several unusual characteristics, including a generic greeting, an unexpected request involving a financial transaction and an unsolicited attachment. According to the recipient, these elements did not match the customer's normal communication patterns.
 
@@ -10,7 +10,7 @@ The objective of this investigation was to determine whether the email was legit
 
 ---
 
-# 2.Investigation Objectives
+# 2. Investigation Objectives
 
 - Analyze the email and extract relevant artifacts.
 - Verify the authenticity and origin of the message.
@@ -20,7 +20,7 @@ The objective of this investigation was to determine whether the email was legit
 
 ---
 
-# 3.Investigation Methodology
+# 3. Investigation Methodology
 
 The investigation was performed by analyzing the provided EML file in a controlled environment. Thunderbird Mail was used to inspect both the email content and its underlying metadata.
 
@@ -37,9 +37,9 @@ The objective was to determine whether the email originated from a legitimate se
 
 ---
 
-# 4.Evidence Analysis
+# 4. Evidence Analysis
 
-## 4.1.Email Overview
+## 4.1. Email Overview
 
 Initial inspection of the email revealed the following information:
 
