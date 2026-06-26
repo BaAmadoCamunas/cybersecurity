@@ -54,3 +54,53 @@ Initial inspection of the email revealed the following information:
 ![Email Overview](images/email-overview.png)
 
 ---
+
+## 4.2. Sender Analysis
+
+The sender presented themselves as **Mr. James Jackson** using the email address:
+
+```text
+info@mutawamarine.com
+```
+
+At first glance, the sender information appeared legitimate and consistent with a business communication.
+
+However, further inspection of the message headers revealed inconsistencies that warranted additional investigation.
+
+---
+
+## 4.3. Reply-To Analysis
+
+The email specified the following Reply-To address:
+
+```text
+info.mutawamarine@mail.com
+```
+
+This address differs from the sender's original domain:
+
+```text
+mutawamarine.com
+```
+
+The use of a different Reply-To address is a common phishing technique. Attackers often impersonate legitimate organizations while redirecting responses to an email account under their control.
+
+This discrepancy represents a strong phishing indicator.
+
+---
+
+## 4.4. Email Routing Analysis
+
+To identify the true origin of the message, the email headers were examined, focusing on the `Received` fields.
+
+The earliest routing entry revealed the originating IP address:
+
+| Artifact | Value |
+|-----------|---------|
+| Originating IP | 192.119.71.157 |
+
+Email routing information is useful because it can reveal the infrastructure responsible for sending the message, regardless of the sender address displayed to the recipient.
+
+![Email Headers](images/email-headers.png)
+
+---
