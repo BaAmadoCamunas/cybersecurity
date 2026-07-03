@@ -74,6 +74,8 @@ Each directory contains individual write-ups documenting investigations, finding
 
 ---
 
+## Portfolio Progress
+
 This repository is continuously expanded as I progress through practical cybersecurity training.
 
 | Category | Status | Write-ups |
