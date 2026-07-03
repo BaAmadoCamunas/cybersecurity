@@ -1,20 +1,25 @@
-# SIEM Investigations
+# Snapped Phish-ing Line
 
-This section focuses on investigating security alerts using SIEM platforms such as Splunk and Elastic Stack.
+## Scenario Overview
 
-## Overview
+Multiple employees at **SwiftSpend Financial** reported receiving a suspicious email containing characteristics commonly associated with phishing attacks. While some users identified the message as suspicious, others interacted with it and submitted their credentials, subsequently losing access to their accounts.
 
-The goal is to analyze logs, correlate events, and triage alerts in order to identify potential security incidents.
+Given the potential for credential compromise and unauthorized access, the incident was escalated to the Security Operations Center (SOC) for investigation.
 
-Topics may include:
-- Alert triage and investigation
-- Log correlation
-- Splunk-based analysis
-- Elastic Stack investigations
+The objective of this investigation was to analyze the phishing campaign, determine the scope of the compromise, identify relevant indicators of compromise (IOCs) and understand the techniques used by the attacker to deceive users.
 
-## Status
+---
 
-Work in progress. Write-ups will be added as they are completed.
+## Investigation Objectives
+
+- Analyze the phishing email and identify suspicious characteristics.
+- Investigate the infrastructure used by the attacker.
+- Identify indicators of compromise (IOCs).
+- Assess the extent of the credential compromise.
+- Reconstruct the attack workflow.
+- Provide recommendations to reduce the risk of similar attacks.
+
+---
 
 
 
