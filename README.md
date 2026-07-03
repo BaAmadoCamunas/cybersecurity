@@ -74,6 +74,23 @@ Each directory contains individual write-ups documenting investigations, finding
 
 ---
 
+This repository is continuously expanded as I progress through practical cybersecurity training.
+
+| Category | Status | Write-ups |
+|----------|:------:|-----------|
+| Offensive Security |  Active | SQL Injection, IDOR |
+| Phishing Analysis |  In Progress | The Greenholt Phish, Snapped Phish-ing Line |
+| Network Security |  Planned | Wireshark: Traffic Analysis, Snort |
+| Threat Detection |  Planned | Detecting Web Attacks, Windows Threat Detection 2, Linux Threat Detection 2 |
+| Threat Intelligence |  Planned | Invite Only |
+| Malware Analysis |  Planned | Living Off the Land Attacks |
+| SIEM Investigations |  Planned | Alert Triage With Splunk |
+| Incident Response |  Planned | Tempest |
+
+New write-ups will be added as the portfolio evolves.
+
+---
+
 ## Methodology
 
 All write-ups follow a structured investigative approach:
