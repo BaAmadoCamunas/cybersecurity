@@ -87,4 +87,21 @@ The phishing page automatically populated the victim's email address, increasing
 ![Fake Login Page](images/fake-login-page.png)
 
 
+---
+
+## Infrastructure Reconnaissance
+
+The phishing infrastructure was further investigated by manually browsing the attacker's server.
+
+Directory indexing was enabled, exposing several hosted resources.
+
+Among them, the archive **Update365.zip** was identified.
+
+| Artifact | Value |
+|-----------|-------|
+| Exposed Archive | Update365.zip |
+
+The exposed directory listing represents a server misconfiguration that unintentionally revealed additional evidence related to the phishing campaign.
+
+![Directory List](images/directory-list.png)
 
