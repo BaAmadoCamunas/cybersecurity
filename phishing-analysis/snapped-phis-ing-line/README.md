@@ -168,3 +168,108 @@ The presence of numerous PHP scripts suggests that the archive contained the com
 ![Virus Total Details](images/VirusTotal-details.png)
 
 ---
+
+## Credential Exposure Assessment
+
+The phishing infrastructure was further inspected to determine whether stolen credentials had been exposed.
+
+A publicly accessible log file was discovered.
+
+```text
+/data/Update365/log.txt
+```
+
+Analysis of the log entries revealed that **michael.ascot@swiftspend.finance** had submitted credentials multiple times.
+
+| Artifact | Value |
+|-----------|-------|
+| Log File | /data/Update365/log.txt |
+| Compromised User | michael.ascot@swiftspend.finance |
+
+This confirms that the phishing campaign successfully harvested user credentials.
+
+![Credential Exposure](images/credential-exposure.png)
+
+---
+
+## Phishing Kit Analysis
+
+The recovered archive was extracted and examined locally.
+
+Inspection of the **submit.php** script revealed the email address configured to receive stolen credentials.
+
+| Artifact | Value |
+|-----------|-------|
+| PHP Script | submit.php |
+| Credential Collection Email | m3npat@yandex.com |
+
+This finding confirms the complete credential harvesting workflow and provides valuable threat intelligence for future investigations.
+
+![Credential Collection Email](images/submit-php.png)
+
+---
+
+# Indicators of Compromise (IOCs)
+
+| Type | Value |
+|------|-------|
+| Sender Email | Accounts.Payable@groupmarketingonline.icu |
+| Root Domain | kennaroads.buzz |
+| Archive | Update365.zip |
+| SHA256 | ba3c15267393419eb08c7b2652b8b6b39b406ef300ae8a18fee4d16b19ac9686 |
+| Credential Collection Email | m3npat@yandex.com |
+| Compromised User | michael.ascot@swiftspend.finance |
+
+---
+
+# Findings
+
+The investigation confirmed that the reported emails were part of a credential harvesting campaign targeting Microsoft 365 users.
+
+Key findings include:
+
+- Phishing emails impersonating financial communications.
+- Personalized phishing URLs containing victim email addresses.
+- A fraudulent Microsoft 365 login page.
+- Exposed phishing infrastructure with directory indexing enabled.
+- A complete phishing kit available for download.
+- Confirmed credential harvesting through exposed log files.
+- Server-side scripts configured to exfiltrate credentials to the attacker's mailbox.
+
+---
+
+# Mitigation Recommendations
+
+- Block all identified IOCs.
+- Disable access to identified phishing domains through web filtering.
+- Reset passwords for affected users.
+- Enforce Multi-Factor Authentication (MFA).
+- Educate users to identify phishing attempts.
+- Monitor for authentication attempts using compromised accounts.
+- Review email security policies and attachment filtering.
+
+---
+
+# Lessons Learned
+
+This investigation demonstrated how a phishing campaign can be reconstructed by combining email analysis, infrastructure investigation, threat intelligence and source code inspection.
+
+Key skills practiced during this exercise include:
+
+- Email Analysis
+- URL Analysis
+- Threat Intelligence Enrichment
+- Infrastructure Reconnaissance
+- Credential Harvesting Investigation
+- IOC Extraction
+- Basic PHP Analysis
+- Incident Investigation
+
+---
+
+# Tools Used
+
+- Thunderbird
+- Linux Terminal
+- VirusTotal
+- Web Browser
