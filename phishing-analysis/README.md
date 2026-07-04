@@ -1,20 +1,74 @@
 # Phishing Analysis
 
-This section focuses on investigating phishing attacks through email analysis, link inspection and threat intelligence techniques.
+This section contains practical phishing investigation write-ups focused on email analysis, credential harvesting campaigns, attacker infrastructure investigation and threat intelligence enrichment.
+
+---
 
 ## Overview
 
-The goal of this section is to simulate real SOC phishing investigations, identifying malicious emails and extracting indicators of compromise (IOCs).
+The write-ups in this section simulate real-world SOC phishing investigations, following a structured methodology to identify malicious activity, assess the impact of phishing campaigns
+and extract actionable Indicators of Compromise (IOCs).
 
-Topics may include:
+Topics covered include:
+
 - Email header analysis
 - Malicious URL investigation
+- Credential harvesting analysis
+- Attacker infrastructure reconnaissance
 - IOC extraction and enrichment
-- Phishing campaign analysis
+- Threat intelligence
+- Incident investigation methodologies
 
-## Status
+---
 
-Work in progress. Write-ups will be added as they are completed.
+## Repository Structure
+
+```plaintext
+phishing-analysis/
+│
+├── The-Greenholt-Phish/
+│   ├── README.md
+│   └── images/
+│
+├── Snapped-Phish-ing-Line/
+│   ├── README.md
+│   └── images/
+│
+└── README.md
+```
+
+---
+
+## Write-Ups
+
+| Write-Up | Description |
+|----------|-------------|
+| **The Greenholt Phish** | Investigation of a phishing email through header analysis, sender validation, SPF/DMARC verification, attachment analysis and threat intelligence enrichment. |
+| **Snapped Phish-ing Line** | End-to-end investigation of a phishing campaign, including credential harvesting infrastructure, phishing kit analysis, exposed logs and IOC extraction. |
+
+---
+
+## Skills Demonstrated
+
+- Email analysis
+- Email header analysis
+- Malicious URL investigation
+- Credential harvesting analysis
+- IOC extraction
+- Threat intelligence enrichment
+- Infrastructure reconnaissance
+- SHA256 hash generation
+- VirusTotal analysis
+- Incident investigation
+
+---
+
+## Tools Used
+
+- Thunderbird
+- Linux Terminal
+- VirusTotal
+- MXToolbox
 
 
 
