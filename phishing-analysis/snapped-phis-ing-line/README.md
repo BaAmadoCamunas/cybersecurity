@@ -38,3 +38,5 @@ The message was then examined to identify the sender and collect the first indic
 
 The sender's domain immediately raised suspicion due to the uncommon **.icu** top-level domain and the use of a generic finance-related mailbox, a naming convention frequently observed in phishing campaigns.
 
+![Suspicious Email](images/suspicious-email.png)
+
