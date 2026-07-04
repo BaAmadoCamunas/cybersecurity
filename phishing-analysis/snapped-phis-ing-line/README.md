@@ -21,5 +21,20 @@ The objective of this investigation was to analyze the phishing campaign, determ
 
 ---
 
+# Evidence Analysis
 
+## Email Identification
+
+The investigation began by reviewing the collection of suspicious emails provided as part of the incident.
+
+Among the reported messages, one email with the subject **"Quote for Services Rendered"** was identified as a phishing email received by **William McClean**.
+
+The message was then examined to identify the sender and collect the first indicators of compromise.
+
+| Artifact | Value |
+|-----------|-------|
+| Recipient | William McClean |
+| Sender Email | Accounts.Payable@groupmarketingonline.icu |
+
+The sender's domain immediately raised suspicion due to the uncommon **.icu** top-level domain and the use of a generic finance-related mailbox, a naming convention frequently observed in phishing campaigns.
 
