@@ -40,3 +40,26 @@ The sender's domain immediately raised suspicion due to the uncommon **.icu** to
 
 ![Suspicious Email](images/suspicious-email.png)
 
+---
+
+## Embedded URL Analysis
+
+To further investigate the phishing campaign, the attachment contained in the email addressed to **Zoe Duncan** was extracted and inspected.
+
+After downloading the HTML attachment, its contents were examined directly from the command line.
+
+```bash
+cat Downloads/Direct\ Credit\ Advice.html
+```
+
+Inspection of the HTML source revealed an embedded URL designed to redirect victims to an external website.
+
+```text
+http://kennaroads.buzz/data/Update365/office365/40e7baa2f826a57fcf04e5202526f8bd/?email=zoe.duncan@swiftspend.finance&error
+```
+
+| Artifact | Value |
+|-----------|-------|
+| Root Domain | kennaroads.buzz |
+
+The embedded URL also contained the victim's email address as a query parameter, indicating that the phishing page was personalized for each recipient.
