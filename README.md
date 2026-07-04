@@ -82,7 +82,7 @@ This repository is continuously expanded as I progress through practical cyberse
 |----------|:------:|-----------|
 | Offensive Security |  Active | SQL Injection, IDOR |
 | Phishing Analysis |  Active | The Greenholt Phish, Snapped Phish-ing Line |
-| Network Security |  Planned | Wireshark: Traffic Analysis, Snort |
+| Network Security |  In Progress | Wireshark: Traffic Analysis, Snort |
 | Threat Detection |  Planned | Detecting Web Attacks, Windows Threat Detection 2, Linux Threat Detection 2 |
 | Threat Intelligence |  Planned | Invite Only |
 | Malware Analysis |  Planned | Living Off the Land Attacks |
