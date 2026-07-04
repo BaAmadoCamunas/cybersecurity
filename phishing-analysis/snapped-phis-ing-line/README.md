@@ -63,3 +63,28 @@ http://kennaroads.buzz/data/Update365/office365/40e7baa2f826a57fcf04e5202526f8bd
 | Root Domain | kennaroads.buzz |
 
 The embedded URL also contained the victim's email address as a query parameter, indicating that the phishing page was personalized for each recipient.
+
+![Zoe Duncan Email](images/ZoeDuncan-email.png)
+
+![HTML Attachment](images/html-attachment.png)
+
+
+---
+
+## Credential Harvesting Page Analysis
+
+The extracted HTML attachment was opened inside a controlled browser environment.
+
+The attachment redirected the browser to a fraudulent **Microsoft 365** login page.
+
+| Artifact | Value |
+|-----------|-------|
+| Impersonated Service | Microsoft 365 |
+| Attack Technique | Credential Harvesting |
+
+The phishing page automatically populated the victim's email address, increasing its legitimacy and reducing user interaction before credential submission.
+
+![Fake Login Page](images/fake-login-page.png)
+
+
+
