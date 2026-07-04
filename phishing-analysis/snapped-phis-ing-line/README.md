@@ -105,3 +105,66 @@ The exposed directory listing represents a server misconfiguration that unintent
 
 ![Directory List](images/directory-list.png)
 
+---
+
+## Phishing Kit Acquisition
+
+The exposed archive was downloaded and its integrity verified.
+
+```bash
+sha256sum Update365.zip
+```
+
+| Artifact | Value |
+|-----------|-------|
+| Archive | Update365.zip |
+| SHA256 | ba3c15267393419eb08c7b2652b8b6b39b406ef300ae8a18fee4d16b19ac9686 |
+
+The generated hash was later used for threat intelligence enrichment.
+
+![Kit AAcquisition](images/kit-acquisition.png)
+
+---
+
+## Threat Intelligence Enrichment
+
+The SHA256 hash was investigated using VirusTotal.
+
+The archive was classified not only as phishing-related but also under the **Trojan** threat category.
+
+| Artifact | Value |
+|-----------|-------|
+| Platform | VirusTotal |
+| Additional Threat Category | Trojan |
+
+Threat intelligence enrichment helps analysts understand how an artifact has previously been classified and provides additional context during investigations.
+
+![Virus Total](images/virus-total.png)
+
+---
+
+## Phishing Kit Characterization
+
+VirusTotal metadata was also reviewed to understand the composition of the phishing kit.
+
+The archive contained **49 files**.
+
+| Artifact | Value |
+|-----------|-------|
+| Contained Files | 49 |
+| Uncompressed Size | 520.27 KB |
+
+The archive included:
+
+- 12 PHP files
+- 7 directories
+- 3 PNG images
+- 2 JPG images
+- 1 GIF image
+- 24 unknown files
+
+The presence of numerous PHP scripts suggests that the archive contained the complete backend required to operate the phishing website.
+
+![Virus Total Details](images/VirusTotal-details.png)
+
+---
