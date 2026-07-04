@@ -1,6 +1,6 @@
 # Snapped Phish-ing Line
 
-## 1.Scenario Overview
+## 1. Scenario Overview
 
 Multiple employees at **SwiftSpend Financial** reported receiving a suspicious email containing characteristics commonly associated with phishing attacks. While some users identified the message as suspicious, others interacted with it and submitted their credentials, subsequently losing access to their accounts.
 
@@ -10,7 +10,7 @@ The objective of this investigation was to analyze the phishing campaign, determ
 
 ---
 
-## Investigation Objectives
+## 2. Investigation Objectives
 
 - Analyze the phishing email and identify suspicious characteristics.
 - Investigate the infrastructure used by the attacker.
@@ -21,9 +21,9 @@ The objective of this investigation was to analyze the phishing campaign, determ
 
 ---
 
-## Evidence Analysis
+## 3. Evidence Analysis
 
-### Email Identification
+### 3.1. Email Identification
 
 The investigation began by reviewing the collection of suspicious emails provided as part of the incident.
 
@@ -42,7 +42,7 @@ The sender's domain immediately raised suspicion due to the uncommon **.icu** to
 
 ---
 
-### Embedded URL Analysis
+### 3.2. Embedded URL Analysis
 
 To further investigate the phishing campaign, the attachment contained in the email addressed to **Zoe Duncan** was extracted and inspected.
 
@@ -71,7 +71,7 @@ The embedded URL also contained the victim's email address as a query parameter,
 
 ---
 
-### Credential Harvesting Page Analysis
+### 3.3. Credential Harvesting Page Analysis
 
 The extracted HTML attachment was opened inside a controlled browser environment.
 
@@ -89,7 +89,7 @@ The phishing page automatically populated the victim's email address, increasing
 
 ---
 
-### Infrastructure Reconnaissance
+### 3.4. Infrastructure Reconnaissance
 
 The phishing infrastructure was further investigated by manually browsing the attacker's server.
 
@@ -107,7 +107,7 @@ The exposed directory listing represents a server misconfiguration that unintent
 
 ---
 
-### Phishing Kit Acquisition
+### 3.5. Phishing Kit Acquisition
 
 The exposed archive was downloaded and its integrity verified.
 
@@ -126,7 +126,7 @@ The generated hash was later used for threat intelligence enrichment.
 
 ---
 
-### Threat Intelligence Enrichment
+### 3.6. Threat Intelligence Enrichment
 
 The SHA256 hash was investigated using VirusTotal.
 
@@ -143,7 +143,7 @@ Threat intelligence enrichment helps analysts understand how an artifact has pre
 
 ---
 
-### Phishing Kit Characterization
+### 3.7. Phishing Kit Characterization
 
 VirusTotal metadata was also reviewed to understand the composition of the phishing kit.
 
@@ -169,7 +169,7 @@ The presence of numerous PHP scripts suggests that the archive contained the com
 
 ---
 
-### Credential Exposure Assessment
+### 3.8. Credential Exposure Assessment
 
 The phishing infrastructure was further inspected to determine whether stolen credentials had been exposed.
 
@@ -192,7 +192,7 @@ This confirms that the phishing campaign successfully harvested user credentials
 
 ---
 
-### Phishing Kit Analysis
+### 3.9. Phishing Kit Analysis
 
 The recovered archive was extracted and examined locally.
 
@@ -209,7 +209,7 @@ This finding confirms the complete credential harvesting workflow and provides v
 
 ---
 
-## Indicators of Compromise (IOCs)
+## 4. Indicators of Compromise (IOCs)
 
 | Type | Value |
 |------|-------|
@@ -222,7 +222,7 @@ This finding confirms the complete credential harvesting workflow and provides v
 
 ---
 
-## Findings
+## 5. Findings
 
 The investigation confirmed that the reported emails were part of a credential harvesting campaign targeting Microsoft 365 users.
 
@@ -238,7 +238,7 @@ Key findings include:
 
 ---
 
-## Mitigation Recommendations
+## 6. Mitigation Recommendations
 
 - Block all identified IOCs.
 - Disable access to identified phishing domains through web filtering.
@@ -250,7 +250,7 @@ Key findings include:
 
 ---
 
-## Lessons Learned
+## 7. Lessons Learned
 
 This investigation demonstrated how a phishing campaign can be reconstructed by combining email analysis, infrastructure investigation, threat intelligence and source code inspection.
 
@@ -267,7 +267,7 @@ Key skills practiced during this exercise include:
 
 ---
 
-## Tools Used
+## 8. Tools Used
 
 - Thunderbird
 - Linux Terminal
