@@ -231,3 +231,13 @@ Key skills practiced during this exercise included:
 - Phishing detection methodologies
 
 These techniques are fundamental for SOC analysts responsible for investigating phishing reports and email-based threats.
+
+---
+
+# 9. Tools Used
+
+- Thunderbird Mail
+- Linux Terminal
+- VirusTotal
+- MXToolbox
+- IP Lookup Service
