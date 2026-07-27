@@ -1,142 +1,69 @@
-# Cybersecurity Write-Ups
+# Snort 3 Installer
 
-A structured cybersecurity portfolio focused on SOC operations, threat detection, incident investigation and foundational offensive security concepts.
-
----
-
-## Overview
-
-This repository showcases practical cybersecurity investigations and lab-based write-ups completed in controlled, legal environments (e.g., TryHackMe).
-
-The focus is on developing real-world SOC analyst skills, including:
-
-- Threat detection and analysis
-- Log and network traffic investigation
-- Phishing analysis and IOC extraction
-- SIEM-based alert triage
-- Windows and Linux security monitoring
-- Understanding attacker techniques and behaviour
-
-This portfolio combines both offensive and defensive security fundamentals to better understand how attacks occur and how they are detected and mitigated.
+A Bash installer that automates the installation of Snort 3 and all required dependencies on a clean Linux server.
 
 ---
 
-## Core Focus Areas
+## Features
 
-### SOC & Blue Team Operations
-- Alert triage and investigation
-- SIEM analysis (Splunk / Elastic concepts)
-- Log correlation and event analysis
-- Incident investigation workflows
+- Installs all required system packages
+- Downloads dependencies from their official sources
+- Compiles and installs each dependency
+- Installs Snort 3 from source
+- Interactive debug menu to install individual components
+- Designed to simplify updates by centralizing dependency versions and download URLs
+---
 
-### Threat Detection & Analysis
-- Web attack detection
-- Endpoint security monitoring (Windows & Linux)
-- Network traffic analysis
-- IDS/IPS concepts (Snort)
+## Supported Platform
 
-### Phishing & Threat Intelligence
-- Email analysis
-- IOC extraction and enrichment
-- Malicious URL and domain investigation
-- Campaign-level phishing analysis
+- Ubuntu 20.04.2 LTS (currently tested)
 
-### Malware Concepts
-- Living Off The Land techniques
-- Behaviour-based detection approaches
-- Threat actor activity analysis
-
-### Offensive Security Fundamentals
-- SQL Injection
-- IDOR (Broken Access Control)
-- Web application vulnerability analysis
+Other Debian-based distributions may work but have not been tested.
 
 ---
 
-## Repository Structure
+## Requirements
 
-```plaintext
-cybersecurity-writeups/
-│
-├── offensive-security/
-├── phishing-analysis/
-├── network-security/
-├── threat-detection/
-├── threat-intelligence/
-├── malware-analysis/
-├── siem-investigations/
-├── incident-response/
-│
-└── README.md
+- Root privileges
+- Internet connection
+- Clean Linux installation
+
+---
+
+## Usage
+
+Download the installer:
+
+```bash
+wget https://github.com/BaAmadoCamunas/cybersecurity/main/security-tools/snort-installer/SnortInstaller.sh
 ```
 
-Each directory contains individual write-ups documenting investigations, findings and mitigation strategies.
+Make it executable:
+
+```bash
+chmod +x SnortInstaller.sh
+```
+
+Run it:
+
+```bash
+sudo ./SnortInsstaller.sh
+```
 
 ---
 
-## Portfolio Progress
+## Project Status
 
-This repository is continuously expanded as I progress through practical cybersecurity training.
-
-| Category | Status | Write-ups |
-|----------|:------:|-----------|
-| Offensive Security |  Active | SQL Injection, IDOR |
-| Phishing Analysis |  Active | The Greenholt Phish, Snapped Phish-ing Line |
-| Network Security |  In Progress | Wireshark: Traffic Analysis, Snort |
-| Threat Detection |  Planned | Detecting Web Attacks, Windows Threat Detection 2, Linux Threat Detection 2 |
-| Threat Intelligence |  Planned | Invite Only |
-| Malware Analysis |  Planned | Living Off the Land Attacks |
-| SIEM Investigations |  Planned | Alert Triage With Splunk |
-| Incident Response |  Planned | Tempest |
-
-New write-ups will be added as the portfolio evolves.
+This project is currently under development.
 
 ---
 
-## Methodology
+## License
 
-All write-ups follow a structured investigative approach:
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
+See the `LICENSE` file for details.
 
-- Scenario overview
-- Initial analysis
-- Evidence collection
-- Log / traffic investigation
-- Indicator of Compromise (IOC) identification
-- MITRE ATT&CK mapping
-- Impact assessment
-- Mitigation recommendations
-- Key lessons learned
+The installer is being implemented and tested dependency by dependency.
 
-This methodology reflects a SOC-oriented investigation workflow.
 
----
-
-## Tools & Technologies
-
-- Splunk
-- Elastic Stack (ELK)
-- Wireshark
-- Snort
-- Burp Suite
-- Nmap
-- Linux
-- Windows Event Logs
-- Python
-- Bash
-- SQL
-- MITRE ATT&CK framework
-
----
-
-## Disclaimer
-
-All content in this repository was created in legal, controlled lab environments for educational purposes only.
-
-This repository does not promote or support unauthorized access or malicious activity.
-
----
-
-## Author
-
-Cybersecurity student focused on SOC operations, threat detection, and incident response, building practical experience through hands-on labs and structured security investigations.
 
