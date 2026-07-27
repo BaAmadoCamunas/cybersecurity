@@ -47,7 +47,7 @@ chmod +x SnortInstaller.sh
 Run it:
 
 ```bash
-sudo ./SnortInsstaller.sh
+sudo ./SnortInstaller.sh
 ```
 
 ---
