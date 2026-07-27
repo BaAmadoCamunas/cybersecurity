@@ -16,7 +16,7 @@ A Bash installer that automates the installation of Snort 3 and all required dep
 
 ## Supported Platform
 
-- Ubuntu 20.04.2 LTS (currently tested)
+- Ubuntu 24.04 LTS (currently tested)
 
 Other Debian-based distributions may work but have not been tested.
 
