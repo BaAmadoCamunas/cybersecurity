@@ -35,7 +35,7 @@ Other Debian-based distributions may work but have not been tested.
 Download the installer:
 
 ```bash
-wget https://github.com/BaAmadoCamunas/cybersecurity/main/security-tools/snort-installer/SnortInstaller.sh
+https://raw.githubusercontent.com/BaAmadoCamunas/cybersecurity/refs/heads/main/security-tools/snort-installer/SnortInstaller.sh
 ```
 
 Make it executable:
