@@ -184,3 +184,83 @@ Further inspection identified the workstation:
 ![Kerberos](images/Kerberos.png)
 
 ---
+
+# ICMP & DNS Tunnelling
+
+## Background
+
+Trusted protocols such as ICMP and DNS can be abused to establish covert communication channels for Command and Control (C2) or data exfiltration.
+
+---
+
+## Evidence Analysis
+
+### ICMP Tunnelling
+
+Inspection of ICMP payloads revealed encapsulated **SSH traffic**, confirming the use of ICMP as a covert communication channel.
+
+![ICMP](images/ICMP.png)
+
+---
+
+### DNS Tunnelling
+
+DNS traffic was analysed using:
+
+```text
+dns
+```
+
+Inspection of the **Queries Name** field identified repeated queries directed to:
+
+> `dataexfil[.]com`
+
+Packet inspection also revealed encapsulated **SSH data**.
+
+![DNS](images/DNS.png)
+
+---
+
+# FTP Investigation
+
+## Background
+
+FTP transmits authentication credentials and commands in plaintext, making it a valuable source of forensic evidence.
+
+---
+
+## Evidence Analysis
+
+### Failed Authentication Attempts
+
+Using:
+
+```text
+ftp.response.code == 530
+```
+
+The investigation identified **737 failed login attempts**, suggesting a brute-force attack.
+
+![FTP Failed Logins](images/FTP-Failed-Logins.png)
+
+---
+
+Successful authentication was identified using:
+
+```text
+ftp.response.code == 230
+```
+
+The TCP Stream revealed interaction with:
+
+- File: `resume.doc`
+- Size: **39,424 bytes**
+
+Further inspection showed the command:
+
+```text
+CHMOD 777
+```
+![TCP Stream](images/TCP-Stream.png)
+
+---
