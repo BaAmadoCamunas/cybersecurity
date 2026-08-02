@@ -343,17 +343,11 @@ The capture contained:
 
 **115 HTTP/2 packets**
 
-![HTTP2](images/http2.png)
-
----
-
 Frame **322** revealed:
 
 `safebrowsing[.]googleapis[.]com`
 
-Searching the decrypted traffic for `FLAG{` recovered:
-
-`FLAG{THM-PACKETMASTER}`
+![HTTP2](images/http2.png)
 
 ---
 
@@ -435,3 +429,4 @@ By combining protocol analysis, display filters, stream reconstruction and TLS d
 ---
 
 ## Disclaimer
+This analysis was performed in a controlled laboratory environment provided by TryHackMe for educational purposes only.
