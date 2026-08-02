@@ -264,3 +264,174 @@ CHMOD 777
 ![TCP Stream](images/TCP-Stream.png)
 
 ---
+
+---
+
+# HTTP Investigation
+
+## Background
+
+HTTP traffic often reveals phishing activity, exploitation attempts and attacker infrastructure.
+
+---
+
+## Evidence Analysis
+
+### User-Agent Analysis
+
+Analysis identified **6 anomalous User-Agent values**.
+
+Packet **52** contained a subtle spelling variation.
+
+![User-Agent Analysis](images/UserAgent.png)
+
+---
+
+### Log4Shell Detection
+
+The following filter isolated the exploitation attempt:
+
+```text
+http.request.method == "POST" and ((frame contains "jndi") or (frame contains "Exploit"))
+```
+
+The attack originated in **packet 444**.
+
+Inspection revealed a Base64-encoded payload.
+
+![Log4Shell](images/Log4Shell.png)
+
+---
+
+### IOC Extraction
+
+The payload was decoded using CyberChef.
+
+Recovered IOC:
+
+`62[.]210[.]130[.]250`
+
+![CyberChef](images/CyberChef.png)
+
+---
+
+# HTTPS Decryption
+
+## Background
+
+HTTPS encrypts application-layer communications using TLS. When session keys are available, Wireshark can decrypt and reconstruct the underlying HTTP traffic.
+
+---
+
+## Evidence Analysis
+
+### TLS Handshake
+
+The **Client Hello** message sent to **accounts.google.com** was identified in:
+
+**Frame 16**
+
+![TLS](images/tls.png)
+
+---
+
+### HTTPS Decryption
+
+After importing the provided **KeysLogFile.txt**, Wireshark successfully decrypted the session.
+
+The capture contained:
+
+**115 HTTP/2 packets**
+
+![HTTP2](images/http2.png)
+
+---
+
+Frame **322** revealed:
+
+`safebrowsing[.]googleapis[.]com`
+
+Searching the decrypted traffic for `FLAG{` recovered:
+
+`FLAG{THM-PACKETMASTER}`
+
+---
+
+# Bonus: Cleartext Credentials
+
+Wireshark's **Tools → Credentials** feature was used to extract authentication data.
+
+The investigation identified:
+
+- HTTP Basic Authentication: **Packet 237**
+- Empty password submission: **Packet 170**
+
+![Credentials](images/Credentials2.png)
+
+---
+
+# Bonus: Actionable Results
+
+Wireshark's **Firewall ACL Rules** feature was used to generate defensive rules.
+
+Generated rules:
+
+```text
+add deny ip from 10.121.70.151 to any in
+```
+
+```text
+add allow MAC 00:d0:59:aa:af:80 any in
+```
+
+![Firewall](images/Firewall.png)
+
+---
+
+# Key Findings
+
+Throughout this investigation, multiple network analysis techniques were applied to identify reconnaissance activity, credential theft, protocol abuse and web-based attacks.
+
+Key findings include:
+
+- Detection of TCP Connect and UDP scanning activity.
+- Identification of an ARP spoofing (MITM) attack.
+- Recovery of intercepted credentials.
+- Host identification using DHCP, NetBIOS and Kerberos.
+- Detection of ICMP and DNS tunnelling.
+- Analysis of malicious FTP activity.
+- Identification of anomalous HTTP User-Agent values.
+- Detection of a Log4Shell exploitation attempt.
+- HTTPS traffic decryption using TLS session keys.
+- Extraction of Indicators of Compromise (IOCs).
+- Generation of firewall rules for incident response.
+
+---
+
+# Tools Used
+
+- Wireshark
+- CyberChef
+- Display Filters
+- Follow TCP Stream
+- TLS Key Log File
+- Firewall ACL Rules
+- HTTP/2 Analysis
+- DHCP
+- Kerberos
+- NetBIOS
+- FTP
+- DNS
+- ICMP
+
+---
+
+# Lessons Learned
+
+This lab demonstrated how Wireshark can be used beyond basic packet inspection to support threat hunting and incident response.
+
+By combining protocol analysis, display filters, stream reconstruction and TLS decryption, it was possible to identify attacker behaviour, recover Indicators of Compromise (IOCs) and transform packet captures into actionable security findings.
+
+---
+
+## Disclaimer
