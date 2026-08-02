@@ -120,3 +120,67 @@ The investigation also revealed the user comment:
 ![Credentials](images/Credentials.png)
 
 ---
+
+# Host Identification
+
+## Background
+
+DHCP, NetBIOS and Kerberos provide valuable metadata that allows analysts to identify users and hosts during investigations.
+
+---
+
+## Evidence Analysis
+
+### DHCP Analysis
+
+The following filter was applied:
+
+```text
+dhcp.option.hostname contains "Galaxy"
+```
+
+The MAC address associated with **Galaxy A30** was identified.
+
+**MAC Address:** `9a:81:41:cb:96:6c`
+
+The device requesting IP address **172.16.13.85** was identified as:
+
+**Galaxy-A12**
+
+![DHCP](images/DHCP.png)
+
+---
+
+### NetBIOS Analysis
+
+Using:
+
+```text
+nbns.name contains "LIVALJM" and nbns.flags.opcode==5
+```
+
+Analysis revealed **16 NetBIOS registration requests**.
+
+![NetBIOS](images/Netbios.png)
+
+---
+
+### Kerberos Analysis
+
+Using:
+
+```text
+kerberos.CNameString contains "u5"
+```
+
+The user **u5** was associated with:
+
+**IP:** `10[.]1[.]12[.]2`
+
+Further inspection identified the workstation:
+
+**xp1$**
+
+![Kerberos](images/Kerberos.png)
+
+---
