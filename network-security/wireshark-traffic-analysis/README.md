@@ -46,5 +46,5 @@ tcp.flags.syn == 1 and tcp.flags.ack == 0 and tcp.window_size > 1024
 The analysis identified **1000 TCP Connect Scan packets**, indicating active host discovery.
 
 > **Evidence:** 1000 TCP Connect Scan packets.
-
+![TCP Connect Scan](images/TCP-Connect.png)
 
