@@ -4,7 +4,7 @@ A technical analysis of network traffic inspection, IDS/IPS detection, packet lo
 
 ---
 
-## Scenario Overview
+# 1. Scenario Overview
 
 Snort is an open-source, rule-based network security tool capable of operating as both an Intrusion Detection System (IDS) and an Intrusion Prevention System (IPS).
 
@@ -18,7 +18,7 @@ The overall analysis is focused on network-based threat detection and the applic
 
 ---
 
-## Investigation Objectives
+# 2. Investigation Objectives
 
 The investigation aims to evaluate the use of Snort for network-based security monitoring and rule-driven threat detection.
 
