@@ -1,6 +1,6 @@
 # Wireshark: Traffic Analysis
 
-## 1. Scenario Overview
+## Scenario Overview
 
 This lab focuses on analysing multiple packet captures using **Wireshark** to identify network reconnaissance, credential theft, protocol abuse, tunnelling techniques and web-based attacks.
 
@@ -8,7 +8,7 @@ Throughout the investigation, different protocols and attack scenarios are analy
 
 ---
 
-## 2. Objectives
+## Objectives
 
 - Analyse packet captures using Wireshark display filters.
 - Identify malicious network activity across multiple protocols.
