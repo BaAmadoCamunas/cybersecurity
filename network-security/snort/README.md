@@ -185,6 +185,91 @@ The results demonstrate the usefulness of offline PCAP analysis for retrospectiv
 
 ## 3.5. Detection Rule Analysis
 
+Snort rules define the conditions under which network traffic is identified and an action is taken. A rule consists of several components, including the action, protocol, source and destination information, traffic direction and optional detection parameters.
+
+The general rule structure is:
+
+    action protocol source_ip source_port direction destination_ip destination_port (options)
+
+The main components are:
+
+| Component | Purpose |
+|---|---|
+| Action | Defines how matching traffic is handled |
+| Protocol | Specifies the network protocol to inspect |
+| Source IP / Port | Defines the traffic origin |
+| Direction | Defines the traffic flow |
+| Destination IP / Port | Defines the traffic destination |
+| Options | Provides additional detection conditions |
+
+Common rule actions include `alert`, `log`, `drop` and `reject`. The direction operator `->` represents traffic flowing from source to destination, while `<>` represents bidirectional traffic.
+
+Rule options provide additional filtering capabilities, allowing detections to focus on specific packet characteristics such as IP identification values, TCP flags, packet size, payload content or source and destination relationships.
+
+---
+
+### 3.5.1. IP Identification Detection
+
+A custom rule was used to identify traffic containing a specific IP identification value:
+
+    alert ip any any <> any any (msg:"ID Test"; id:35369; sid:10000000001; rev:1;)
+
+The rule generated the detection message:
+
+    TIMESTAMP REQUEST
+
+![Snort IP ID rule detection](images/snort-rule-ip-id.png)
+
+---
+
+### 3.5.2. TCP SYN Detection
+
+TCP SYN packets were identified using the `flags:S` rule option:
+
+    alert tcp any any <> any any (msg:"FLAG TEST"; flags:S; sid:10000000002; rev:1;)
+
+The rule matched **1 packet**.
+
+![Snort SYN rule detection](images/snort-rule-syn.png)
+
+---
+
+### 3.5.3. TCP PUSH-ACK Detection
+
+A second TCP rule was used to identify packets containing both PUSH and ACK flags:
+
+    alert tcp any any <> any any (msg:"Push-Ack FLAG TEST"; flags:PA; sid:10000000003; rev:1;)
+
+The rule matched **216 packets**.
+
+![Snort PUSH-ACK rule detection](images/snort-rule-push-ack.png)
+
+---
+
+### 3.5.4. Same Source and Destination IP Detection
+
+The `sameip` option was used to identify UDP packets where the source and destination IP addresses were identical:
+
+    alert udp any any <> any any (msg:"SAME IP TEST"; sameip; sid:10000000004; rev:1;)
+
+The rule matched **7 packets**.
+
+![Snort sameip rule detection](images/snort-rule-sameip.png)
+
+---
+
+### 3.5.5. Rule Revision
+
+The `rev` option identifies the revision number of a Snort rule. It allows rule versions to be tracked when detection logic is modified or updated.
+
+For example:
+
+    rev:1;
+
+The revision number should be incremented when an existing rule is modified in a way that represents a new version of the detection logic.
+
+The tested rules demonstrate how Snort can combine protocol selection, traffic direction, packet fields, TCP flags and rule options to create targeted network detections.
+
 ---
 
 ## 3.6. Detection Logic and Configuration
