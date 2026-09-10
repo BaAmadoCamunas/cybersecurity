@@ -31,3 +31,26 @@ The primary objectives are:
 - Develop and test custom Snort detection rules.
 - Evaluate how different configurations and rule sets influence detection results.
 - Assess the relevance of Snort capabilities within a SOC monitoring and investigation workflow.
+
+---
+
+# 3. Evidence Analysis
+
+## 3.1. Network Traffic Inspection
+
+Snort provides several operating parameters for inspecting network traffic at different levels of detail. Sniffer mode can be used to observe packets directly from a network interface, 
+while additional parameters control the amount and type of information displayed.
+
+The main inspection parameters are:
+
+| Parameter | Function |
+|---|---|
+| `-v` | Displays TCP/IP packet information |
+| `-d` | Displays packet payload data |
+| `-e` | Displays link-layer information |
+| `-X` | Displays packet data in hexadecimal and ASCII format |
+| `-i` | Specifies the network interface |
+
+These options allow network traffic to be examined from different perspectives, ranging from basic packet metadata to payload and link-layer information.
+
+The combination of these parameters provides the initial visibility required for packet-level network analysis and supports subsequent investigation and detection activities.
