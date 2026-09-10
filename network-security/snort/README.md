@@ -363,7 +363,71 @@ The overall detection workflow can be summarised as:
           ↓
     Alert / Log / Prevention
 
+---
+
+# 4. Findings
+
+The analysis demonstrated that Snort can provide visibility across multiple stages of network security monitoring, from packet inspection and traffic logging to rule-based detection and retrospective PCAP investigation.
+
+The main findings were:
+
+- Snort successfully provided packet-level visibility through its network traffic inspection capabilities.
+- ASCII packet logging enabled captured traffic to be stored and subsequently reviewed during investigation.
+- A total of **41 HTTP packets** were identified within the analysed traffic.
+- Snort detected **2 HTTP GET methods** using the configured IDS ruleset.
+- Offline analysis of `mx-1.pcap` generated **170 alerts** using the primary configuration and **68 alerts** using an alternative configuration.
+- Analysis of `mx-2.pcap` generated **340 alerts**, while combined analysis of `mx-2.pcap` and `mx-3.pcap` generated **1020 alerts**.
+- Custom rules successfully identified specific network characteristics, including an IP identification value, TCP SYN packets, TCP PUSH-ACK packets and packets with identical source and destination IP addresses.
+- The same network capture produced different alert volumes when processed with different configurations, demonstrating the direct influence of rulesets and configuration on detection output.
+
+The results demonstrate that Snort can support both real-time network monitoring and retrospective investigation. Effective detection, however, depends on appropriate rule configuration, network definitions and continuous tuning of the detection logic.
+
 This architecture allows Snort to provide both real-time network monitoring and retrospective analysis of previously captured traffic.
 
 ---
 
+# 5. Mitigation Recommendations
+
+The following recommendations can improve the effectiveness and operational value of Snort within a network security monitoring environment:
+
+- **Maintain an up-to-date ruleset:** Regularly review and update detection rules to improve coverage against current threats and attacker techniques.
+
+- **Tune detection rules:** Adjust rules according to the monitored environment to reduce false positives while maintaining visibility into relevant suspicious activity.
+
+- **Define network variables accurately:** Ensure that `HOME_NET`, `EXTERNAL_NET` and related configuration variables correctly represent the monitored network.
+
+- **Centralise security alerts:** forward Snort alerts to a SIEM platform to enable correlation with endpoint, authentication, firewall and other security telemetry.
+
+- **Establish alert triage procedures:** define severity, investigation, escalation and response procedures for Snort-generated alerts.
+
+- **Use PCAP analysis for retrospective investigation:** preserve relevant network captures where appropriate and use offline analysis to investigate historical activity and validate detections.
+
+- **Review custom detection rules:** regularly assess locally developed rules for accuracy, relevance, performance and potential false-positive conditions.
+
+- **Separate detection from prevention carefully:** deploy IPS capabilities only after appropriate testing and rule tuning to minimise the risk of legitimate traffic being blocked.
+
+- **Monitor detection effectiveness:** periodically evaluate alert volumes, false positives, detection coverage and rule performance to identify gaps and improve network monitoring.
+
+These measures can help integrate Snort more effectively into a broader SOC monitoring and incident investigation workflow.
+
+---
+
+# 6. Lesson Learned
+
+The analysis demonstrates several important considerations for network-based security monitoring and IDS/IPS operations.
+
+- **Detection quality depends on configuration:** the different alert volumes generated from the same PCAP demonstrate that detection results are directly influenced by the active configuration and ruleset.
+
+- **Rule-based detection requires continuous tuning:** broad rules can generate significant alert volumes, making rule optimisation important for reducing false positives and maintaining effective analyst visibility.
+
+- **Network visibility supports investigation:** packet inspection and logging provide valuable context that can be used to identify traffic characteristics and reconstruct network activity.
+
+- **PCAP analysis enables retrospective investigation:** previously captured traffic can be reprocessed against different configurations and rules, allowing detections to be validated and historical activity to be investigated.
+
+- **Custom rules provide targeted detection:** Snort rules can be designed to identify specific packet characteristics, such as TCP flags, IP fields or unusual source and destination relationships.
+
+- **IDS and IPS serve different operational purposes:** IDS provides visibility and alerting, while IPS introduces an enforcement capability that requires careful validation and tuning before deployment.
+
+- **Detection engineering is an iterative process:** effective network monitoring requires continuous evaluation of rules, alert quality, network context and detection coverage.
+
+Overall, Snort demonstrates how network telemetry, configurable detection logic and retrospective traffic analysis can be combined to support SOC monitoring and security investigations.
