@@ -144,6 +144,43 @@ The distinction between IDS and IPS operation is therefore primarily based on th
 
 ## 3.4. PCAP Investigation
 
+Snort can analyse previously captured network traffic stored in PCAP files, enabling retrospective investigation without requiring access to the original network session. This capability can be used to identify 
+network activity, generate alerts and evaluate captured traffic against different detection configurations.
+
+The `mx-1.pcap` capture was first analysed using the primary Snort configuration:
+
+    sudo snort -c /etc/snort/snort.conf -A full -l . -r mx-1.pcap
+
+The analysis generated **170 alerts**. The associated statistics also reported **18 TCP segments queued** and **3 HTTP response headers extracted**.
+
+![Snort mx-1 PCAP analysis](images/snort-pcap-mx1.png)
+
+The same PCAP was subsequently analysed using an alternative configuration:
+
+    sudo snort -c /etc/snort/snortv2.conf -A full -l . -r mx-1.pcap
+
+This analysis generated **68 alerts**.
+
+![Snort alternative configuration](images/snort-pcap-mx1-v2.png)
+
+The difference between the two results demonstrates that Snort detection output is directly influenced by the configuration and ruleset applied to the same network traffic. This is an important consideration when interpreting alert volumes during security investigations.
+
+A second capture, `mx-2.pcap`, was analysed using the primary configuration:
+
+    sudo snort -c /etc/snort/snort.conf -A full -l . -r mx-2.pcap
+
+The analysis generated **340 alerts** and identified **82 TCP packets**.
+
+Multiple PCAP files were then processed together:
+
+    sudo snort -c /etc/snort/snort.conf -A full -l . --pcap-list="mx-2.pcap mx-3.pcap"
+
+The combined analysis generated **1020 alerts**.
+
+![Snort multi-PCAP analysis](images/snort-pcap-multiple.png)
+
+The results demonstrate the usefulness of offline PCAP analysis for retrospective threat detection. Applying consistent configurations across multiple captures allows network activity to be investigated at scale, while comparing configurations can help assess the effectiveness and coverage of different detection rulesets.
+
 ---
 
 ## 3.5. Detection Rule Analysis
