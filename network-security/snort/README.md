@@ -412,7 +412,14 @@ These measures can help integrate Snort more effectively into a broader SOC moni
 
 ---
 
-# 6. Lesson Learned
+# 6. Tools Used
+
+- Snort
+- Linux
+
+---
+
+# 7. Lesson Learned
 
 The analysis demonstrates several important considerations for network-based security monitoring and IDS/IPS operations.
 
