@@ -54,3 +54,47 @@ The main inspection parameters are:
 These options allow network traffic to be examined from different perspectives, ranging from basic packet metadata to payload and link-layer information.
 
 The combination of these parameters provides the initial visibility required for packet-level network analysis and supports subsequent investigation and detection activities.
+
+---
+
+## 3.2. Packet Logging and Analysis
+
+Snort can operate as a packet logger, allowing captured network traffic to be stored for subsequent investigation. Packet logging can be performed in binary format or as human-readable ASCII output, 
+depending on the analysis requirements.
+
+ASCII logging was enabled using the following configuration:
+
+    sudo snort -dev -K ASCII -l .
+
+The `-l` parameter specifies the logging directory, while `-K ASCII` configures Snort to generate human-readable log files. The `-d`, `-e` and `-v` parameters provide additional packet and protocol information 
+during the capture.
+
+The generated logs can subsequently be reviewed using Snort's packet-reading functionality:
+
+    snort -r snort.log.1640048004 -n 10
+
+The `-r` parameter reads a previously generated Snort log, while `-n 10` limits the analysis to the first ten packets. This allows individual packet attributes to be examined without capturing the traffic again.
+
+The initial packet analysis identified the source port associated with DNS traffic as `3009`.
+
+![Snort packet logging output](images/snort-packet-logging.png)
+
+![Snort packet logging output](images/snort-packet-logging2.png)
+
+Further analysis of the captured packets identified the following network attributes:
+
+| Network Attribute | Observed Value |
+|---|---|
+| Source port associated with DNS traffic | `3009` |
+| IP identification value | `49313` |
+| HTTP Referer | `http://www.ethereal.com/development.html` |
+| TCP Acknowledgement | `0x38AFFFF3` |
+
+HTTP traffic was subsequently isolated to determine the number of packets associated with TCP port 80. The packet analysis also identified **41 HTTP packets** within the captured traffic.
+
+![Snort packet replay output](images/snort-packet-replay.png)
+
+![Snort packet replay output](images/snort-packet-replay2.png)
+
+
+The packet logging and replay capabilities provide a practical mechanism for both real-time traffic collection and retrospective network investigation. Captured traffic can be revisited to extract protocol-level indicators and validate observations without requiring the original network activity to be reproduced.
