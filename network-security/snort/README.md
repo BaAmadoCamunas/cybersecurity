@@ -274,4 +274,96 @@ The tested rules demonstrate how Snort can combine protocol selection, traffic d
 
 ## 3.6. Detection Logic and Configuration
 
+Snort processes network traffic through a sequence of components that transform captured packets into detection events, alerts, logs or prevention actions.
+
+The general processing flow can be represented as:
+
+    Packet Capture
+          ↓
+    Packet Decoder
+          ↓
+    Pre-processors
+          ↓
+    Detection Engine
+          ↓
+    Logging & Alerting
+          ↓
+    Output Plugins
+
+The **Packet Decoder** interprets the raw network frames and extracts protocol information required for further analysis.
+
+**Pre-processors** perform additional traffic processing before the packets reach the detection engine. Depending on the configuration, these components can normalise traffic, identify protocol-specific characteristics and provide additional context for rule evaluation.
+
+The **Detection Engine** evaluates traffic against the configured Snort rules. Matching conditions can generate alerts or trigger other actions depending on the rule action and the operating mode.
+
+**Logging and Alerting** components determine how detection events are recorded and presented. Output plugins provide mechanisms for storing or forwarding these events for subsequent analysis.
+
 ---
+
+### 3.6.1. Configuration and Ruleset Management
+
+Snort 2 relies on a central configuration file and a defined ruleset to determine how network traffic is processed and detected.
+
+The primary configuration files and variables include:
+
+| Configuration | Purpose |
+|---|---|
+| `snort.conf` | Main Snort configuration |
+| `local.rules` | Custom detection rules |
+| `HOME_NET` | Defines the protected network |
+| `EXTERNAL_NET` | Defines external network traffic |
+| `RULE_PATH` | Defines the location of Snort rules |
+| `SO_RULE_PATH` | Defines the location of shared-object rules |
+| `PREPROC_RULE_PATH` | Defines the location of preprocessor rules |
+
+The `HOME_NET` and `EXTERNAL_NET` variables establish the network context used by detection rules. Correctly defining these variables is important because many rules rely on the distinction between internal and external traffic.
+
+Custom rules can be maintained in `local.rules` and included from the main Snort configuration. This allows environment-specific detection logic to be added without modifying the core Snort configuration.
+
+---
+
+### 3.6.2. Data Acquisition
+
+Snort uses Data Acquisition (DAQ) modules to receive network traffic. Different DAQ modules support different traffic acquisition and processing requirements.
+
+Common DAQ modules include:
+
+| DAQ Module | Purpose |
+|---|---|
+| `pcap` | Packet capture and PCAP-based analysis |
+| `afpacket` | High-performance packet acquisition and inline processing |
+| `nfq` | Linux Netfilter Queue integration |
+| `ipfw` | FreeBSD IPFW integration |
+| `ipq` | Linux IP Queue integration |
+| `dump` | Packet acquisition for diagnostic purposes |
+
+The `pcap` module is commonly used for packet capture and offline PCAP investigation, while `afpacket` can be used for higher-performance packet processing and inline IPS deployments.
+
+---
+
+### 3.6.2. Detection and Operational Context
+
+The analysis demonstrates that Snort detection is determined by the interaction between traffic, configuration, preprocessing and the active ruleset.
+
+A change in the applied configuration can therefore produce different detection results when processing the same network traffic. This behaviour was demonstrated during the PCAP analysis, where the same `mx-1.pcap` capture generated different alert volumes when processed with different configurations.
+
+From a SOC perspective, this highlights the importance of maintaining an appropriate ruleset, defining network variables correctly and tuning detections according to the monitored environment.
+
+The overall detection workflow can be summarised as:
+
+    Network Traffic
+          ↓
+    Packet Acquisition
+          ↓
+    Packet Processing
+          ↓
+    Rule Evaluation
+          ↓
+    Detection Event
+          ↓
+    Alert / Log / Prevention
+
+This architecture allows Snort to provide both real-time network monitoring and retrospective analysis of previously captured traffic.
+
+---
+
