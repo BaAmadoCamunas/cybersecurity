@@ -438,3 +438,13 @@ The analysis demonstrates several important considerations for network-based sec
 - **Detection engineering is an iterative process:** effective network monitoring requires continuous evaluation of rules, alert quality, network context and detection coverage.
 
 Overall, Snort demonstrates how network telemetry, configurable detection logic and retrospective traffic analysis can be combined to support SOC monitoring and security investigations.
+
+---
+
+## 7.1. Disclaimer
+
+This report documents technical security analysis performed in controlled and authorised environments for educational and professional development purposes.
+
+The techniques, commands, detection rules and analysis methods described in this document are intended for legitimate security monitoring, defensive analysis and authorised testing only.
+
+No unauthorised access, exploitation or activity against third-party systems is intended or endorsed.
