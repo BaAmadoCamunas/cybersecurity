@@ -34,8 +34,8 @@ Each write-up contains its own supporting evidence and documentation, with scree
 
 | Write-Up | Description |
 |---|---|
-| Wireshark — Traffic Analysis | A network traffic investigation focused on packet-level analysis, protocol inspection, network reconnaissance, ARP spoofing, DNS and ICMP tunnelling, cleartext protocols, HTTP/HTTPS traffic, credential exposure and network-based threat investigation. |
-| Snort — Network Detection and Traffic Analysis | A network detection analysis focused on Snort's IDS/IPS capabilities, packet logging, PCAP investigation, alert generation and custom detection rule development. |
+| Wireshark: Traffic Analysis | A network traffic investigation focused on packet-level analysis, protocol inspection, network reconnaissance, ARP spoofing, DNS and ICMP tunnelling, cleartext protocols, HTTP/HTTPS traffic, credential exposure and network-based threat investigation. |
+| Snort: Network Detection and Traffic Analysis | A network detection analysis focused on Snort's IDS/IPS capabilities, packet logging, PCAP investigation, alert generation and custom detection rule development. |
 
 ---
 
