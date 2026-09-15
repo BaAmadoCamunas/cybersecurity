@@ -310,3 +310,11 @@ The investigation demonstrates that effective web shell detection requires more 
 - **Detection should be layered:** combining web logs, file system monitoring, audit events, network telemetry and SIEM correlation provides stronger visibility than relying on a single detection source.
 
 Overall, the investigation highlights the importance of reconstructing attacker behaviour across multiple telemetry sources rather than treating individual events in isolation.
+
+---
+
+# 8. Tools Used
+
+- Linux Terminal
+- Apache
+- WordPress
