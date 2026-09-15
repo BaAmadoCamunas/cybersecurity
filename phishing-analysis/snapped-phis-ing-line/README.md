@@ -273,3 +273,9 @@ Key skills practiced during this exercise include:
 - Linux Terminal
 - VirusTotal
 - Web Browser
+
+---
+
+# 9. Disclaimer
+
+This analysis was performed in a controlled laboratory environment provided by TryHackMe for educational purposes only.
