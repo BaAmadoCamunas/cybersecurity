@@ -183,4 +183,47 @@ The file analysis provided the final host-level evidence required to connect the
 
 The investigation therefore established a coherent sequence of activity: reconnaissance originating from `203.0.113.66`, discovery of the `/wordpress` application, interaction with `upload_form.php`, deployment and access of `shadyshell.php`, execution of operating system commands, subsequent download of `linpeas.sh` and confirmation of the malicious file on the host.
 
+---
 
+# 4. Indicators of Compromise
+
+The investigation identified several indicators associated with the observed web shell compromise. These indicators were derived from the correlation of Apache access logs, web application activity and host-level file system evidence.
+
+The indicators should be considered collectively rather than in isolation. Individual elements such as PHP files, POST requests or command-line activity may be legitimate within a web environment. Their significance increases when they appear together as part of a consistent sequence of reconnaissance, application discovery, file upload, web shell access and post-compromise activity.
+
+### Network Indicators
+
+| Indicator | Type | Context |
+|---|---|---|
+| `203.0.113[.]66` | Source IP | Source address associated with the suspicious activity observed in the Apache access logs |
+
+### Web Application Indicators
+
+| Indicator | Type | Context |
+|---|---|---|
+| `/wordpress` | Targeted path | WordPress application path successfully identified during reconnaissance |
+| `upload_form.php` | Upload endpoint | PHP endpoint associated with the activity preceding deployment of the web shell |
+| `shadyshell.php` | Web shell | Malicious PHP file subsequently accessed through the web application |
+
+### Host and File Indicators
+
+| Indicator | Type | Context |
+|---|---|---|
+| `/var/www/html/wordpress/wp-content/uploads/shadyshell.php` | Malicious file path | Location of the deployed web shell on the compromised host |
+| `linpeas.sh` | Post-compromise tool | Script downloaded after web shell access for further host-level reconnaissance |
+
+### Behavioural Indicators
+
+- Repeated requests resulting in `404 Not Found` responses during initial reconnaissance.
+- Successful discovery of the `/wordpress` application path.
+- `POST` activity targeting `upload_form.php`.
+- Subsequent requests targeting `shadyshell.php`.
+- Operating system command execution through the web shell, including `whoami`.
+- Execution within the `www-data` security context.
+- Download of `linpeas.sh` following web shell access.
+- Presence of an executable PHP file within the WordPress uploads directory.
+- Web shell source code containing functionality associated with command execution.
+
+The combination of these indicators provides stronger evidence of compromise than any individual artefact considered independently. The observed sequence links external web activity with the deployment, execution and subsequent use of a malicious server-side file.
+
+The source IP `203.0.113[.]66` is presented in defanged form for safe handling in security documentation. It represents the source address observed within the controlled lab environment and should not be interpreted as a real-world attribution of malicious activity.
