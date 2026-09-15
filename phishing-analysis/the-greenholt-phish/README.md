@@ -241,3 +241,9 @@ These techniques are fundamental for SOC analysts responsible for investigating 
 - VirusTotal
 - MXToolbox
 - IP Lookup Service
+
+---
+
+# 10. Disclaimer
+
+This analysis was performed in a controlled laboratory environment provided by TryHackMe for educational purposes only.
