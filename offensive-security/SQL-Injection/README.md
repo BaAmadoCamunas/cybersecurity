@@ -11,13 +11,17 @@ This allows an attacker to manipulate database queries and potentially access, m
 
 SQL Injection (SQLi) happens when an application fails to properly validate user input before using it in a SQL query.
 
-## Why it happens
+---
+
+## 1.1. Why it happens
 
 - Unsanitized user input is concatenated into SQL queries
 - Lack of parameterized queries (prepared statements)
 - Trusting client-side input
 
-## Security Impact
+---
+
+## 1.2. Security Impact
 
 SQL Injection can allow attackers to:
 
@@ -47,7 +51,7 @@ Error-based SQL Injection relies on forcing the database to return error message
 
 ---
 
-### Detection
+### 2.1.1. Detection
 
 The vulnerability was identified in the `id` parameter of the following endpoint:
 
@@ -65,7 +69,7 @@ This caused a database error, confirming that the input is directly included in 
 
 ---
 
-### Evidence
+### 2.1.2. Evidence
 
 ![SQL error when injecting single quote](images/sqli_error_id_param_1_quote.png)
 
@@ -73,7 +77,7 @@ The application returns a SQL syntax error when malformed input is provided.
 
 ---
 
-### Explanation
+### 2.1.3. Explanation
 
 The error occurs because the application concatenates user input directly into an SQL query. When the query structure is broken using special characters (such as `'`), the database returns an error message that leaks internal information.
 
@@ -81,7 +85,7 @@ This confirms the existence of an Error-Based SQL Injection vulnerability.
 
 ---
 
-### Security Impact
+### 2.1.4. Security Impact
 
 Error messages from the database can expose internal structure and help attackers enumerate the database schema.
 
@@ -92,7 +96,7 @@ Union-Based SQL Injection allows an attacker to combine the results of two SQL q
 
 ---
 
-### Identifying the number of columns
+### 2.2.1. Identifying the number of columns
 
 To successfully use `UNION SELECT`, the number of columns in the original query must match the injected query.
 
@@ -110,7 +114,7 @@ The correct number of columns was identified as **3**, as the query stopped retu
 
 ---
 
-### Forcing output display
+### 2.2.2. Forcing output display
 
 By default, the application displays the first result of the original query. To overwrite this behavior, the original query result was neutralized:
 
@@ -124,7 +128,7 @@ This allowed the injected values to be displayed directly in the response.
 
 ---
 
-### Extracting database name
+### 2.2.3. Extracting database name
 
 The database name was retrieved using the built-in SQL function `database()`:
 
@@ -138,7 +142,7 @@ This revealed the active database being used by the application.
 
 ---
 
-### Enumerating database tables
+### 2.2.4. Enumerating database tables
 
 The `information_schema` database was used to retrieve table names:
 
@@ -158,7 +162,7 @@ Result included tables such as:
 
 ---
 
-### Enumerating columns
+### 2.2.5. Enumerating columns
 
 Once the relevant table (`staff_users`) was identified, its structure was enumerated:
 
@@ -177,7 +181,7 @@ This revealed the following columns:
 
 ---
 
-### Extracting credentials
+### 2.2.6. Extracting credentials
 
 Finally, user credentials were extracted using concatenation techniques:
 
@@ -193,7 +197,7 @@ This returned all usernames and passwords stored in the table.
 
 ---
 
-### Why this works
+### 2.2.7. Why this works
 
 The vulnerability exists because the application directly concatenates user-controlled input into SQL queries without proper sanitization or parameterization.
 
@@ -201,7 +205,7 @@ As a result, attackers can manipulate the structure of the original query and in
 
 ---
 
-### Security Impact
+### 2.2.8. Security Impact
 
 Union-Based SQL Injection can allow attackers to:
 
@@ -222,7 +226,7 @@ Even without visible feedback, it is still possible to manipulate SQL queries an
 
 ---
 
-## Authentication Bypass
+## 3.1. Authentication Bypass
 
 One of the most common uses of Blind SQL Injection is bypassing authentication mechanisms such as login forms.
 
@@ -230,7 +234,7 @@ In these scenarios, the objective is not to extract data directly from the datab
 
 ---
 
-## Original query structure
+## 3.2. Original query structure
 
 The login form sends user-controlled input to the following SQL query:
 
@@ -247,7 +251,7 @@ If the query returns `TRUE`, access is granted.
 
 ---
 
-## SQL Injection payload
+## 3.3. SQL Injection payload
 
 The following payload was injected into the password field:
 
@@ -274,7 +278,7 @@ As a result, the authentication check is bypassed.
 
 ---
 
-## Why this works
+## 3.4. Why this works
 
 The vulnerability exists because user-controlled input is directly concatenated into the SQL query without proper validation or parameterization.
 
@@ -284,7 +288,7 @@ This causes the database to return a successful authentication result even when 
 
 ---
 
-## Security Impact
+## 3.5. Security Impact
 
 Authentication bypass vulnerabilities can allow attackers to:
 
@@ -303,7 +307,7 @@ Although no database errors or query results are directly displayed, attackers c
 
 ---
 
-## Target endpoint
+## 4.1. Target endpoint
 
 The vulnerable endpoint exposed the following functionality:
 
@@ -331,7 +335,7 @@ This behavior created a boolean condition that could be used to infer database i
 
 ---
 
-## Original query structure
+## 4.2. Original query structure
 
 The backend query processed user-controlled input as follows:
 
@@ -345,7 +349,7 @@ Because the application directly concatenated user input into the SQL query, it 
 
 ---
 
-## Identifying the number of columns
+## 4.3. Identifying the number of columns
 
 The `UNION SELECT` technique was used to determine the number of columns required by the original query.
 
@@ -365,7 +369,7 @@ The application returned a positive boolean response when using three columns, c
 
 ---
 
-## Enumerating the database name
+## 4.4. Enumerating the database name
 
 The `LIKE` operator was used alongside wildcard characters (`%`) to infer the database name character by character.
 
@@ -388,7 +392,7 @@ sqli_three
 
 ---
 
-## Enumerating table names
+## 4.5. Enumerating table names
 
 The `information_schema.tables` table was queried to enumerate database tables.
 
@@ -407,7 +411,7 @@ This confirmed the existence of the `users` table.
 
 ---
 
-## Enumerating column names
+## 4.6. Enumerating column names
 
 Column names were enumerated using the `information_schema.columns` table.
 
@@ -435,7 +439,7 @@ The following columns were identified:
 
 ---
 
-## Enumerating credentials
+## 4.7. Enumerating credentials
 
 The same boolean inference technique was used to identify valid usernames and passwords.
 
@@ -454,7 +458,7 @@ By iterating through characters one at a time, the password was successfully enu
 
 ---
 
-## Why this works
+## 4.8. Why this works
 
 The application does not directly display SQL errors or query results, but it still exposes differences in behavior based on whether injected conditions evaluate to `TRUE` or `FALSE`.
 
@@ -462,7 +466,7 @@ Attackers can leverage these boolean responses to infer database structure and c
 
 ---
 
-## Security Impact
+## 4.9. Security Impact
 
 Boolean-Based Blind SQL Injection can allow attackers to:
 
@@ -482,7 +486,7 @@ Unlike Boolean-Based SQL Injection, no visual indication is returned by the appl
 
 ---
 
-## Concept
+## 5.1. Concept
 
 The attacker injects SQL conditions that trigger a time delay only when the injected statement is valid.
 
@@ -492,7 +496,7 @@ If there is no delay, the condition evaluated to `FALSE`.
 
 ---
 
-## Identifying the number of columns
+## 5.2. Identifying the number of columns
 
 The `SLEEP()` function was used together with `UNION SELECT` to determine the correct number of columns required by the query.
 
@@ -518,7 +522,7 @@ This time, the server response was delayed by approximately five seconds, confir
 
 ---
 
-## Enumerating database information
+## 5.3. Enumerating database information
 
 The same inference logic used in Boolean-Based SQL Injection was applied, but this time using response delays instead of visual boolean responses.
 
@@ -537,7 +541,7 @@ This technique allows attackers to enumerate database names character by charact
 
 ---
 
-## Enumerating tables and columns
+## 5.4. Enumerating tables and columns
 
 The `information_schema` database can also be queried using time-based conditions.
 
@@ -560,7 +564,7 @@ The same technique can be applied to enumerate column names and eventually extra
 
 ---
 
-## Why this works
+## 5.5. Why this works
 
 Even though the application does not display database errors or query results, attackers can still infer information through measurable response delays.
 
@@ -570,7 +574,7 @@ This creates a side-channel that leaks information about the database structure 
 
 ---
 
-## Security Impact
+## 5.6. Security Impact
 
 Time-Based Blind SQL Injection can allow attackers to:
 
@@ -582,25 +586,29 @@ Time-Based Blind SQL Injection can allow attackers to:
   
 ---
 
-# 7. Mitigations
+# 6. Mitigations
 
 SQL Injection vulnerabilities can be mitigated through secure coding practices, proper input handling and defensive database configurations.
 
 ---
 
-## Prepared Statements (Parameterized Queries)
+## 6.1. Prepared Statements (Parameterized Queries)
 
 Prepared statements separate SQL logic from user-controlled input.
 
 This prevents attackers from modifying the structure of SQL queries, as input values are treated strictly as data rather than executable SQL code.
 
-### Vulnerable example
+---
+
+### 6.1.1. Vulnerable example
 
 ```python
 query = "SELECT * FROM users WHERE username='" + username + "'"
 ```
 
-### Secure implementation
+---
+
+### 6.1.2. Secure implementation
 
 ```python
 query = "SELECT * FROM users WHERE username=%s"
@@ -611,7 +619,7 @@ Parameterized queries are one of the most effective defenses against SQL Injecti
 
 ---
 
-## Input Validation
+## 7. Input Validation
 
 Applications should validate and restrict user input whenever possible.
 
@@ -628,7 +636,7 @@ Input validation reduces the attack surface and helps prevent malicious payloads
 
 ---
 
-## Escaping User Input
+## 8. Escaping User Input
 
 Special characters such as:
 
@@ -646,7 +654,7 @@ Prepared statements should always be prioritized.
 
 ---
 
-## Principle of Least Privilege
+## 9. Principle of Least Privilege
 
 Database accounts used by applications should operate with the minimum privileges required.
 
@@ -660,7 +668,7 @@ Limiting database permissions reduces the impact of successful SQL Injection att
 
 ---
 
-## Error Handling
+## 10. Error Handling
 
 Applications should avoid exposing raw database errors to users.
 
@@ -675,7 +683,7 @@ Errors should instead be logged securely on the server side while displaying gen
 
 ---
 
-## Additional Security Measures
+## 11. Additional Security Measures
 
 Additional protections may include:
 
@@ -687,10 +695,15 @@ Additional protections may include:
 
 ---
 
-## Final Notes
+## 12. Final Notes
 
 SQL Injection remains one of the most critical web application vulnerabilities due to its potential impact and prevalence.
 
 Secure query handling, proper validation and defensive programming practices are essential to protecting modern applications against SQL Injection attacks.
 
+---
+
+## 13. Disclaimer
+
+This analysis was performed in a controlled laboratory environment provided by TryHackMe for educational purposes only.
 
