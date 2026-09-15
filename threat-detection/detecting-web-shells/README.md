@@ -33,3 +33,47 @@ A further objective is to establish what actions were performed after the web sh
 
 Finally, the investigation aims to locate the malicious file on the host and analyse its contents to confirm its role in the compromise. By correlating Apache access logs with file system evidence, the analysis seeks to produce a coherent timeline of the incident and identify reliable indicators that could support future detection, threat hunting and incident response activities.
 
+---
+
+# 3. Evidence Analysis
+
+The investigation was conducted by correlating multiple sources of evidence to reconstruct the activity associated with the suspected web shell compromise. The primary source of telemetry was the Apache access log, which provided visibility into HTTP requests made against the WordPress application. This evidence was complemented by host-level file system analysis to establish whether suspicious server-side files were present and to determine their role in the observed activity.
+
+Rather than treating individual requests, files or command executions as isolated events, the investigation focused on identifying relationships between them. Reconnaissance activity, successful resource discovery, file upload requests, access to the newly deployed PHP file, command execution and subsequent tool downloads were analysed as stages of a broader attack sequence.
+
+The analysis therefore follows the incident from both a detection and investigation perspective. Initial sections establish the characteristics of web shells and the telemetry that can be used to detect them, while the later sections apply those concepts to the observed environment and reconstruct the attack using the available evidence.
+
+This approach provides a clearer understanding of how the compromise developed from web application reconnaissance into server-side code execution and subsequent post-compromise activity. It also establishes the evidentiary basis for the indicators of compromise and findings presented later in the report.
+
+---
+
+## 3.1. Web Shell Fundamentals
+
+A web shell is a malicious server-side program that provides an attacker with the ability to execute commands on a compromised web server through web requests. Unlike a conventional remote shell, which typically requires a direct network connection to a command-line service, a web shell can use the application's existing HTTP or HTTPS interface as the communication channel.
+
+Web shells are commonly introduced through vulnerabilities that allow an attacker to write files to a web-accessible location. Insecure file upload functionality is one example, particularly when an application fails to properly validate the uploaded file type, extension, content or destination. Once a server-side script has been successfully placed in an executable web directory, requests to that file may cause the web server to execute attacker-controlled code.
+
+The functionality of a web shell can vary considerably. A minimal implementation may simply accept a command through an HTTP parameter and pass it to an operating system execution function. More advanced web shells may provide authentication mechanisms, file browsing, command history, file upload and download capabilities, or other functionality designed to support continued access to the compromised system.
+
+From a security monitoring perspective, the most important characteristic is the relationship between web activity and operating system activity. A request to a PHP resource may appear legitimate when viewed in isolation, but becomes significantly more suspicious when the same resource accepts arbitrary command parameters and produces command output. This creates an observable connection between HTTP requests recorded by the web server and actions performed on the underlying host.
+
+The privileges available to the web shell are also important when assessing the impact of a compromise. Commands are normally executed within the security context of the web server process, which on Linux systems may commonly be associated with accounts such as `www-data`. Although this account may have limited privileges, it can still provide an attacker with access to application files, configuration data, credentials and other resources available to the web service.
+
+For this reason, web shell investigations should not focus exclusively on identifying a suspicious PHP file. Analysts should also examine how the file was introduced, which requests interacted with it, what commands were executed and whether additional activity occurred after the initial access. These relationships provide the context required to distinguish a potentially malicious web shell from legitimate server-side application functionality.
+
+---
+
+## 3.2. Web Shell Command Execution
+
+During the investigation, the deployed web shell was accessed to verify its ability to execute commands on the compromised server. The `whoami` command was used as an initial test to determine the security context under which commands were being executed.
+
+The command returned `www-data`, indicating that the web shell was executing commands within the security context of the web server process. This is consistent with the account commonly used by web server processes on Linux systems and demonstrates that the malicious script had successfully provided operating system-level command execution through the web application.
+
+![Web shell command execution showing the compromised web server context](images/webshell-whoami.png)
+
+The investigation then continued with basic file system enumeration. Commands such as `ls` were used to identify files accessible from the current working directory, followed by `cat` to inspect the contents of relevant files. This demonstrated that the web shell could be used to interact with the underlying file system rather than being limited to a single predefined command.
+
+![Web shell command execution during file system enumeration](images/webshell-command-execution.png)
+
+The observed behaviour confirms the primary security impact of the web shell. An attacker with access to the malicious PHP file could use HTTP requests as a mechanism for executing operating system commands and retrieving their output from the compromised server.
+
