@@ -77,3 +77,49 @@ The observed command execution confirms the primary impact of the web shell: an 
 
 ## 3.2. Apache Access Log Investigation
 
+After establishing the capabilities of the web shell, the investigation moved to the Apache access logs to reconstruct how the malicious activity occurred and identify the events that preceded the web shell interaction.
+
+Apache access logs provide visibility into HTTP requests processed by the web server, including source addresses, requested resources, HTTP methods, response codes and timestamps. Analysing these records chronologically allows reconnaissance, resource discovery, upload activity and subsequent web shell access to be correlated.
+
+---
+
+### 3.2.1. Attacker Identification
+
+The investigation began by filtering the Apache access log for unsuccessful requests returning `404 Not Found` responses:
+
+    cat /var/log/apache2/access.log | grep "404"
+
+The results showed repeated requests originating from `203.0.113.66`. The repeated unsuccessful requests were consistent with resource discovery or probing activity and provided the first identifiable source address associated with the suspicious activity.
+
+![Apache access log showing the attacker IP during reconnaissance](images/apache-attacker-ip.png)
+
+The source address was therefore treated as a relevant network indicator and was used to correlate subsequent activity within the access log.
+
+---
+
+### 3.2.2. Directory Discovery
+
+The next step was to identify resources that the attacker successfully accessed. Filtering the log for `200 OK` responses revealed successful requests made against the application:
+
+    cat /var/log/apache2/access.log | grep "200"
+
+Among the successful requests, the attacker accessed the `/wordpress` directory. This established the location of the targeted WordPress application and represented the first successfully identified application path during the investigation.
+
+![Apache access log showing successful discovery of the WordPress directory](images/apache-directory-discovery.png)
+
+The successful discovery of the WordPress directory provided additional context for the subsequent activity and established the application targeted during the compromise.
+
+---
+
+### 3.2.3. Upload Activity
+
+The investigation then focused on HTTP POST requests to identify activity associated with file uploads:
+
+    cat /var/log/apache2/access.log | grep "POST"
+
+The results identified requests targeting `upload_form.php`. The endpoint was subsequently associated with the deployment of the malicious PHP file observed later in the investigation.
+
+![Apache access log showing POST activity targeting the upload endpoint](images/webshell-upload.png)
+
+The sequence of events established a progression from reconnaissance to successful application discovery and interaction with a file upload endpoint. This provided an important link between the initial web activity and the subsequent appearance of the web shell.
+
