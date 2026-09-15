@@ -443,8 +443,5 @@ Overall, Snort demonstrates how network telemetry, configurable detection logic 
 
 ## 7.1. Disclaimer
 
-This report documents technical security analysis performed in controlled and authorised environments for educational and professional development purposes.
+This analysis was performed in a controlled laboratory environment provided by TryHackMe for educational purposes only.
 
-The techniques, commands, detection rules and analysis methods described in this document are intended for legitimate security monitoring, defensive analysis and authorised testing only.
-
-No unauthorised access, exploitation or activity against third-party systems is intended or endorsed.
