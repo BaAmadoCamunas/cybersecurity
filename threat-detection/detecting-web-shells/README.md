@@ -191,13 +191,17 @@ The investigation identified several indicators associated with the observed web
 
 The indicators should be considered collectively rather than in isolation. Individual elements such as PHP files, POST requests or command-line activity may be legitimate within a web environment. Their significance increases when they appear together as part of a consistent sequence of reconnaissance, application discovery, file upload, web shell access and post-compromise activity.
 
-### Network Indicators
+---
+
+## 4.1. Network Indicators
 
 | Indicator | Type | Context |
 |---|---|---|
 | `203.0.113[.]66` | Source IP | Source address associated with the suspicious activity observed in the Apache access logs |
 
-### Web Application Indicators
+---
+
+## 4.2. Web Application Indicators
 
 | Indicator | Type | Context |
 |---|---|---|
@@ -205,14 +209,18 @@ The indicators should be considered collectively rather than in isolation. Indiv
 | `upload_form.php` | Upload endpoint | PHP endpoint associated with the activity preceding deployment of the web shell |
 | `shadyshell.php` | Web shell | Malicious PHP file subsequently accessed through the web application |
 
-### Host and File Indicators
+---
+
+## 4.3. Host and File Indicators
 
 | Indicator | Type | Context |
 |---|---|---|
 | `/var/www/html/wordpress/wp-content/uploads/shadyshell.php` | Malicious file path | Location of the deployed web shell on the compromised host |
 | `linpeas.sh` | Post-compromise tool | Script downloaded after web shell access for further host-level reconnaissance |
 
-### Behavioural Indicators
+---
+
+## 4.4. Behavioural Indicators
 
 - Repeated requests resulting in `404 Not Found` responses during initial reconnaissance.
 - Successful discovery of the `/wordpress` application path.
@@ -227,3 +235,78 @@ The indicators should be considered collectively rather than in isolation. Indiv
 The combination of these indicators provides stronger evidence of compromise than any individual artefact considered independently. The observed sequence links external web activity with the deployment, execution and subsequent use of a malicious server-side file.
 
 The source IP `203.0.113[.]66` is presented in defanged form for safe handling in security documentation. It represents the source address observed within the controlled lab environment and should not be interpreted as a real-world attribution of malicious activity.
+
+---
+
+# 5. Findings
+
+The investigation identified a complete web shell attack sequence against the monitored WordPress application.
+
+The main findings were:
+
+- The source IP `203.0.113[.]66` was associated with the suspicious activity observed in the Apache access logs.
+- Initial requests included unsuccessful resource probes that generated `404 Not Found` responses, consistent with reconnaissance activity.
+- The attacker successfully identified the `/wordpress` application path.
+- A `POST` request to `upload_form.php` was associated with the activity preceding deployment of the malicious `shadyshell.php` web shell.
+- Subsequent requests to `shadyshell.php` demonstrated active interaction with the deployed web shell.
+- The `whoami` command confirmed that the web shell provided operating system command execution.
+- Commands executed through the web shell operated within the `www-data` security context.
+- The attacker subsequently downloaded `linpeas.sh`, indicating further host-level reconnaissance after gaining web shell access.
+- File system analysis located `shadyshell.php` within the WordPress uploads directory at `/var/www/html/wordpress/wp-content/uploads/shadyshell.php`.
+- Analysis of the web shell source code confirmed that the file contained functionality associated with server-side command execution and additional hidden content.
+
+The observed sequence demonstrates how a web shell can provide an attacker with a transition from web application compromise to operating system-level command execution and subsequent post-compromise activity.
+
+The investigation also demonstrates the value of correlating web server logs with host-level file system evidence. Neither source alone provides the complete attack narrative, while their combination allows the deployment, execution and subsequent use of the web shell to be reconstructed.
+
+---
+
+# 6. Mitigation Recommendations
+
+The following measures can reduce the likelihood and impact of web shell deployment:
+
+- **Secure file upload functionality:** validate uploaded files by extension, MIME type, file signature/content and reject server-side executable files where they are not required.
+
+- **Store uploads outside executable web directories:** user-uploaded content should preferably be stored in locations where server-side execution is disabled.
+
+- **Disable script execution in upload directories:** web server configuration should prevent uploaded files from being interpreted as executable PHP, ASP, JSP or other server-side scripts.
+
+- **Apply least privilege:** web server processes should operate with the minimum permissions required. The account used by the application should not have unnecessary write access to executable application directories.
+
+- **Monitor web-accessible directories:** detect newly created or modified executable files, particularly within upload directories and other locations that are not expected to contain server-side scripts.
+
+- **Correlate web and host telemetry:** combine Apache/Nginx access logs with file-system monitoring and process telemetry to identify relationships between HTTP requests, file creation and command execution.
+
+- **Monitor suspicious HTTP behaviour:** detection rules should consider unusual request methods, suspicious query parameters, anomalous User-Agents, repeated probing and repeated requests to newly created server-side files.
+
+- **Centralise telemetry in a SIEM:** web server, host, authentication and process events should be collected centrally to support correlation and alert triage.
+
+- **Harden the WordPress environment:** keep WordPress, plugins and themes updated and remove unnecessary components that could introduce exploitable vulnerabilities.
+
+- **Restrict outbound network access:** limiting unnecessary outbound connections from web servers can reduce an attacker's ability to download additional tools after gaining web shell access.
+
+- **Perform regular file integrity monitoring:** unexpected changes to application files should generate alerts for investigation.
+
+These controls should be implemented as a layered detection and prevention strategy rather than relying on a single indicator or log source.
+
+---
+
+# 7. Lesson Learned
+
+The investigation demonstrates that effective web shell detection requires more than identifying individual suspicious requests or files.
+
+- **Web server logs provide valuable attack context:** request methods, response codes, source addresses, URIs, User-Agents and query strings can reveal reconnaissance and subsequent web shell interaction.
+
+- **Behavioural correlation increases detection confidence:** a suspicious `POST` request becomes significantly more relevant when followed by the deployment and execution of a new server-side script.
+
+- **Web shells bridge web and host-level activity:** although the initial interaction occurs through HTTP, successful exploitation can result in operating system command execution under the web server's security context.
+
+- **File system analysis complements network telemetry:** locating the deployed web shell provides host-level evidence that cannot be obtained from access logs alone.
+
+- **Post-compromise activity can reveal attacker objectives:** the download of `linpeas.sh` demonstrated that web shell access was followed by further host reconnaissance.
+
+- **Individual indicators require context:** PHP files, POST requests, `www-data` or command-line tools are not inherently malicious. Their significance increases when multiple indicators form a coherent attack sequence.
+
+- **Detection should be layered:** combining web logs, file system monitoring, audit events, network telemetry and SIEM correlation provides stronger visibility than relying on a single detection source.
+
+Overall, the investigation highlights the importance of reconstructing attacker behaviour across multiple telemetry sources rather than treating individual events in isolation.
