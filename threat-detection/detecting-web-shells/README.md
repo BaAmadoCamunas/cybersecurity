@@ -123,3 +123,64 @@ The results identified requests targeting `upload_form.php`. The endpoint was su
 
 The sequence of events established a progression from reconnaissance to successful application discovery and interaction with a file upload endpoint. This provided an important link between the initial web activity and the subsequent appearance of the web shell.
 
+---
+
+## 3.3. Post-Compromise Activity
+
+Once the web shell had been deployed and accessed, the investigation identified activity consistent with further reconnaissance of the compromised host.
+
+---
+
+### 3.3.1. Additional Tool Download
+
+The Apache access log was filtered for requests associated with `shadyshell.php`:
+
+    cat /var/log/apache2/access.log | grep "shadyshell"
+
+The resulting entries showed continued interaction with the web shell. In addition to command execution, the attacker subsequently downloaded `linpeas.sh` through the compromised environment.
+
+![Apache access log showing web shell interaction and post-compromise activity](images/webshell-access.png)
+
+The presence of `linpeas.sh` is significant because the script is commonly used to enumerate Linux systems for security weaknesses and potential privilege escalation opportunities. Its download therefore indicates that the attacker had progressed beyond the initial web shell access and was performing further host-level reconnaissance.
+
+This activity demonstrates how a web shell can act as a bridge between a web application compromise and broader system-level investigation by the attacker.
+
+---
+
+## 3.4. Web Shell File Analysis
+
+The final stage of the investigation focused on locating the web shell on the compromised host and examining its contents. This provided host-level evidence that could be correlated with the HTTP activity previously identified in the Apache logs.
+
+---
+
+### 3.4.1. File Location
+
+The web shell was located by searching the `/var/www` directory for the known filename:
+
+    find /var/www -type f -name "shadyshell.php"
+
+The search identified the following path:
+
+    /var/www/html/wordpress/wp-content/uploads/shadyshell.php
+
+The location is significant because the file was stored within the WordPress uploads directory, a location normally intended for uploaded application content rather than arbitrary server-side command execution.
+
+The presence of an executable PHP file in this location, combined with the previously identified upload activity and subsequent requests to `shadyshell.php`, provides strong evidence linking the file to the observed compromise.
+
+---
+
+### 3.4.2. Source Code Analysis
+
+The contents of the identified file were then examined to determine whether its functionality was consistent with a web shell:
+
+    cat /var/www/html/wordpress/wp-content/uploads/shadyshell.php
+
+The source code confirmed that the file contained functionality associated with server-side command execution and additional hidden content.
+
+![Source code analysis of the deployed web shell](images/webshell-source.png)
+
+The file analysis provided the final host-level evidence required to connect the malicious script with the activity observed in the Apache access logs. When combined with the upload request, subsequent web shell access, command execution and post-compromise tool download, the evidence supports the conclusion that `shadyshell.php` was the malicious web shell used during the compromise.
+
+The investigation therefore established a coherent sequence of activity: reconnaissance originating from `203.0.113.66`, discovery of the `/wordpress` application, interaction with `upload_form.php`, deployment and access of `shadyshell.php`, execution of operating system commands, subsequent download of `linpeas.sh` and confirmation of the malicious file on the host.
+
+
