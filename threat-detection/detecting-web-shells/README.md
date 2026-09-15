@@ -318,3 +318,10 @@ Overall, the investigation highlights the importance of reconstructing attacker 
 - Linux Terminal
 - Apache
 - WordPress
+
+---
+
+# 9. Disclaimer
+
+This analysis was performed in a controlled laboratory environment provided by TryHackMe for educational purposes only.
+
