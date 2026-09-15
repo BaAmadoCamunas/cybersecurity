@@ -324,3 +324,7 @@ This room demonstrated how insecure object references can expose sensitive infor
 Although IDOR vulnerabilities may appear simple, they remain one of the most common and impactful access control issues in modern web applications and APIs.
 
 ---
+
+# 8. Disclaimer
+
+This analysis was performed in a controlled laboratory environment provided by TryHackMe for educational purposes only.
