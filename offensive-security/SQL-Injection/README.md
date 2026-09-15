@@ -695,7 +695,7 @@ Additional protections may include:
 
 ---
 
-## 6.7. Final Notes
+# 7. Final Notes
 
 SQL Injection remains one of the most critical web application vulnerabilities due to its potential impact and prevalence.
 
@@ -703,7 +703,7 @@ Secure query handling, proper validation and defensive programming practices are
 
 ---
 
-## 7. Disclaimer
+# 8. Disclaimer
 
 This analysis was performed in a controlled laboratory environment provided by TryHackMe for educational purposes only.
 
