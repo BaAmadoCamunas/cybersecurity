@@ -619,7 +619,7 @@ Parameterized queries are one of the most effective defenses against SQL Injecti
 
 ---
 
-## 7. Input Validation
+## 6.2. Input Validation
 
 Applications should validate and restrict user input whenever possible.
 
@@ -636,7 +636,7 @@ Input validation reduces the attack surface and helps prevent malicious payloads
 
 ---
 
-## 8. Escaping User Input
+## 6.3. Escaping User Input
 
 Special characters such as:
 
@@ -654,7 +654,7 @@ Prepared statements should always be prioritized.
 
 ---
 
-## 9. Principle of Least Privilege
+## 6.4. Principle of Least Privilege
 
 Database accounts used by applications should operate with the minimum privileges required.
 
@@ -668,7 +668,7 @@ Limiting database permissions reduces the impact of successful SQL Injection att
 
 ---
 
-## 10. Error Handling
+## 6.5. Error Handling
 
 Applications should avoid exposing raw database errors to users.
 
@@ -683,7 +683,7 @@ Errors should instead be logged securely on the server side while displaying gen
 
 ---
 
-## 11. Additional Security Measures
+## 6.6. Additional Security Measures
 
 Additional protections may include:
 
@@ -695,7 +695,7 @@ Additional protections may include:
 
 ---
 
-## 12. Final Notes
+## 6.7. Final Notes
 
 SQL Injection remains one of the most critical web application vulnerabilities due to its potential impact and prevalence.
 
@@ -703,7 +703,7 @@ Secure query handling, proper validation and defensive programming practices are
 
 ---
 
-## 13. Disclaimer
+## 7. Disclaimer
 
 This analysis was performed in a controlled laboratory environment provided by TryHackMe for educational purposes only.
 
