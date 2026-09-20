@@ -548,3 +548,38 @@ Incident Response & Recovery
 ```
 
 Implementing these controls can improve the ability of a SOC to detect suspicious post-compromise activity, investigate related artifacts and contain affected systems before the attacker can progress further.
+
+---
+
+# 7. Lessons Learned
+
+The investigation provided practical experience in conducting a host-based security investigation using Windows Security and Sysmon telemetry.
+
+The main lessons learned were:
+
+- **Correlate multiple sources of evidence:** individual events often provide limited context. Correlating Windows Security and Sysmon events can reveal relationships between authentication, process execution, persistence and network activity.
+
+- **Build a chronological timeline:** organizing events by timestamp helps reconstruct the sequence of an incident and understand how different activities are connected.
+
+- **Understand Windows telemetry:** familiarity with Windows Security events and Sysmon data is essential for identifying suspicious authentication, process, file, registry and network activity.
+
+- **Investigate persistence from multiple angles:** attackers can use different Windows mechanisms to maintain access, requiring analysts to understand services, scheduled tasks, user accounts and logon-related execution.
+
+- **Analyze process relationships:** parent-child process relationships can provide important context when determining how and why a suspicious executable was launched.
+
+- **Validate suspicious artifacts safely:** controlled execution in an isolated environment can provide additional behavioral information and help validate findings obtained from logs.
+
+- **Separate evidence from inference:** a strong investigation should clearly distinguish between what was directly observed and what was concluded from correlating multiple artifacts.
+
+- **Document findings clearly:** Structured evidence, relevant screenshots, IOCs and concise conclusions make an investigation easier to review, reproduce and communicate.
+
+- **Think like a SOC analyst:** effective investigation requires moving beyond individual alerts and determining whether apparently unrelated events form part of a broader attack sequence.
+
+Overall, the investigation strengthened practical skills in Windows event analysis, Sysmon investigation, timeline reconstruction, persistence detection, evidence correlation and SOC-oriented reporting.
+
+---
+
+# 8. Tools Used
+
+- Windows Event Viewer
+- Command Prompt (CMD)
