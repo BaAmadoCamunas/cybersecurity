@@ -128,3 +128,67 @@ Privileged Persistent Access
 This activity provided evidence of a persistence mechanism based on the creation of a new privileged user account. The combination of the account creation and subsequent administrative group membership made the `support` account an important artifact for detection and incident response.
 
 ---
+
+## 3.3. Persistence via Windows Services and Scheduled Tasks
+
+The investigation continued by examining additional persistence mechanisms involving Windows services and scheduled tasks.
+
+The analysis focused on the artifacts available in:
+
+```plaintext
+C:\Users\Administrator\Desktop\Practice\Task 4\
+```
+
+Two separate persistence mechanisms were identified during the investigation.
+
+The first mechanism involved a Windows service created to maintain persistence for the **Nessie** malware. The service was identified as:
+
+```plaintext
+Data Protection Service
+```
+
+The creation of a new Windows service provided the malware with a mechanism to execute through the operating system's service infrastructure, allowing the malicious component to remain available beyond the initial compromise.
+
+![Service Persistence](images/service-persistence.png)
+
+The investigation then examined scheduled task activity associated with the **Troy** malware. A scheduled task named:
+
+```plaintext
+AmazonSync
+```
+
+was identified as another persistence mechanism.
+
+Scheduled tasks can allow malicious programs to execute automatically according to a configured trigger, providing an additional method for maintaining access to a compromised Windows host.
+
+![Scheduled Task Persistence](images/scheduled-task-persistence.png)
+
+
+The associated `troy.exe` executable was subsequently located and executed from the command line in the controlled lab environment to validate the identified artifact.
+
+![Troy Execution](images/troy-execution.png)
+
+
+A second execution capture was used to document the resulting behavior. The challenge-specific output has been intentionally omitted from this report.
+
+![Troy Result](images/troy-result.png)
+
+
+The persistence mechanisms identified in this stage can be summarized as:
+
+```text
+Nessie
+  ↓
+Data Protection Service
+  ↓
+Windows Service Persistence
+
+
+Troy
+  ↓
+AmazonSync
+  ↓
+Scheduled Task Persistence
+```
+
+The identification of multiple independent persistence mechanisms demonstrates how a threat actor can establish redundant methods of maintaining access to a compromised Windows host. Detecting service creation and scheduled task activity is therefore an important component of post-compromise Windows monitoring.
