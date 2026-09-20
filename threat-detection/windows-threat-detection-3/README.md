@@ -367,3 +367,184 @@ Overall, the investigation demonstrated that the compromise could be reconstruct
 From a SOC perspective, the findings highlight the importance of correlating multiple Windows telemetry sources rather than investigating individual events in isolation. The relationship between otherwise separate events provided a clearer picture of the post-compromise activity and the mechanisms used to maintain access to the host.
 
 ---
+
+# 6. Mitigation Recommendations
+
+Based on the findings identified during the investigation, several defensive measures can be implemented to reduce the likelihood and impact of similar activity on Windows systems.
+
+---
+
+## 6.1. Strengthen Authentication Controls
+
+Repeated failed authentication attempts against privileged accounts should be monitored and investigated.
+
+Recommended measures include:
+
+- Enable Multi-Factor Authentication (MFA) where supported.
+- Implement account lockout or throttling policies appropriate to the environment.
+- Monitor repeated failed logon attempts against privileged accounts.
+- Restrict the use of shared or generic administrative accounts.
+- Apply strong password policies and prevent password reuse.
+- Review privileged account activity regularly.
+
+Particular attention should be given to sequences involving multiple failed authentication attempts followed by a successful login.
+
+---
+
+## 6.2. Monitor Privileged Account Creation
+
+The creation of unexpected local accounts should generate an alert or investigation workflow.
+
+Security teams should monitor for:
+
+- Creation of new local user accounts.
+- Unexpected additions to privileged groups such as `Administrators`.
+- Changes to existing account privileges.
+- Account creation outside approved administrative procedures.
+
+Accounts that are not associated with a documented administrative requirement should be investigated and disabled or removed according to incident response procedures.
+
+---
+
+## 6.3. Monitor Windows Service and Scheduled Task Creation
+
+Windows services and scheduled tasks can provide legitimate administrative functionality but can also be abused for persistence.
+
+Detection rules should monitor:
+
+- Creation of new Windows services.
+- Creation or modification of scheduled tasks.
+- Execution of `sc.exe` and `schtasks.exe`.
+- Services or scheduled tasks launching executables from unusual locations.
+- Unexpected services or tasks created by non-administrative processes.
+
+New persistence mechanisms should be validated against known administrative changes and software deployment activity.
+
+---
+
+## 6.4. Monitor Suspicious Process and File Activity
+
+Endpoint telemetry should be used to identify suspicious executables and unusual execution locations.
+
+Recommended monitoring includes:
+
+- Process creation involving executables from user-writable directories.
+- Executables launched from `AppData` or other unusual locations.
+- Suspicious parent-child process relationships.
+- Newly created or downloaded executable files.
+- Execution of binaries with generic or misleading filenames.
+
+Sysmon process creation and file creation events can provide useful telemetry for this type of investigation.
+
+---
+
+## 6.5. Monitor Network Connections to Suspicious Infrastructure
+
+Outbound network connections from unexpected processes should be investigated, particularly when the destination is unfamiliar or newly observed.
+
+Recommended controls include:
+
+- Monitor outbound connections from unusual processes.
+- Investigate suspicious or newly observed domains.
+- Use DNS logging to support domain-based threat hunting.
+- Apply network filtering and egress controls where appropriate.
+- Correlate process execution with outbound network connections.
+
+A process such as `update.exe` communicating with an unexpected external domain should be investigated in the context of the surrounding host activity.
+
+---
+
+## 6.6. Centralize and Correlate Windows Telemetry
+
+The investigation demonstrated the value of correlating multiple Windows event sources.
+
+A centralized SIEM or equivalent monitoring platform should collect and correlate:
+
+```text
+Windows Security Logs
+        +
+Sysmon Logs
+        +
+DNS / Network Telemetry
+        +
+Endpoint Detection Data
+        ↓
+Centralized Detection & Correlation
+```
+
+Correlation rules can help identify sequences such as:
+
+```text
+Failed Logons
+      ↓
+Successful Authentication
+      ↓
+New User Creation
+      ↓
+Administrative Group Membership
+      ↓
+Service / Scheduled Task Creation
+      ↓
+Suspicious Process Execution
+      ↓
+External Network Communication
+```
+
+Detecting these relationships can provide stronger evidence of compromise than monitoring each event independently.
+
+---
+
+## 6.7. Apply the Principle of Least Privilege
+
+Administrative privileges should be limited to accounts and processes that require them.
+
+Organizations should:
+
+- Minimize the number of permanent local administrators.
+- Use separate accounts for administrative and standard activities.
+- Review local group membership regularly.
+- Remove unnecessary administrative privileges.
+- Apply least-privilege principles to services and scheduled tasks.
+
+Reducing unnecessary privileges can limit the actions available to an attacker after an account is compromised.
+
+---
+
+## 6.8. Maintain Endpoint and Recovery Controls
+
+Endpoint protection and recovery capabilities should complement detection controls.
+
+Recommended measures include:
+
+- Keep Windows and installed software patched.
+- Maintain up-to-date endpoint protection.
+- Enable tamper protection where available.
+- Maintain offline or otherwise protected backups.
+- Regularly test backup restoration procedures.
+- Establish an incident response process for compromised endpoints.
+
+These controls can help reduce both the likelihood of successful persistence and the potential impact of destructive activity such as ransomware.
+
+---
+
+## 6.9. Mitigation Summary
+
+The investigation indicates that effective defense against this type of activity requires multiple layers of protection rather than a single security control.
+
+```text
+Authentication Controls
+        ↓
+Account & Privilege Monitoring
+        ↓
+Endpoint Detection
+        ↓
+Persistence Monitoring
+        ↓
+Network Monitoring
+        ↓
+Centralized Log Correlation
+        ↓
+Incident Response & Recovery
+```
+
+Implementing these controls can improve the ability of a SOC to detect suspicious post-compromise activity, investigate related artifacts and contain affected systems before the attacker can progress further.
