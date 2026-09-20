@@ -33,3 +33,58 @@ The primary objectives are:
 
 The investigation ultimately aims to demonstrate how multiple Windows telemetry sources can be correlated to detect post-compromise activity and identify an attack before it progresses toward more significant impact.
 
+---
+
+# 3. Evidence Analysis
+
+The investigation was conducted using Windows Security and Sysmon event logs collected from the compromised host. The analysis focused on reconstructing the threat actor's activity across Command and Control and multiple persistence mechanisms.
+
+---
+
+## 3.1. Command and Control Setup
+
+The investigation began by examining Sysmon logs from:
+
+```plaintext
+C:\Users\Administrator\Desktop\Practice\Task 2\Sysmon.evtx
+```
+
+The first stage of the analysis focused on identifying evidence of the Command and Control infrastructure established by the threat actor.
+
+A suspicious archive named **`URGENT!.zip`** was identified as having been downloaded to the compromised host. The archive represented the initial artifact associated with the subsequent deployment of the C2 component.
+
+![C2 Archive Download](images/c2-archive-download.png)
+
+Further analysis identified the C2 malware executable as **`update.exe`**, located in the following directory:
+
+```plaintext
+C:\Users\Administrator\AppData\Roaming\update.exe
+```
+
+The use of a generic filename such as `update.exe` and its placement within the user's `AppData\Roaming` directory were considered relevant indicators for further investigation.
+
+![C2 Malware Location](images/c2-malware-location.png)
+
+Network-related Sysmon events were then examined to identify external communication associated with the suspicious executable. The analysis identified the following domain:
+
+```plaintext
+route.m365officesync.workers.dev
+```
+
+The relationship between the malicious executable and this external domain provided evidence consistent with a C2 communication channel.
+
+![C2 Network Connection](images/c2-network-connection.png)
+
+The resulting C2 activity can therefore be summarized as:
+
+```text
+URGENT!.zip
+     ↓
+update.exe
+     ↓
+C:\Users\Administrator\AppData\Roaming\update.exe
+     ↓
+route.m365officesync.workers.dev
+```
+
+---
