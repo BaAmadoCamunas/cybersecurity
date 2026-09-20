@@ -88,3 +88,43 @@ route.m365officesync.workers.dev
 ```
 
 ---
+
+## 3.2. Persistence via Backdoored User Account
+
+The investigation then moved to the Windows Security logs to determine whether the threat actor had established an additional account for persistent access.
+
+The analysis focused on:
+
+```plaintext
+C:\Users\Administrator\Desktop\Practice\Task 3\Security.evtx
+```
+
+Initial authentication events revealed **six failed login attempts** against the `Administrator` account before a successful authentication was observed. This activity was relevant because repeated failed authentication attempts followed by a successful login can indicate an attempt to gain access to a privileged account.
+
+![Persistence Failed Logons](images/persistence-failed-logons.png)
+
+Following the successful authentication, a new local user account named **`support`** was created. The account creation was recorded in the Windows Security logs and provided evidence of a new identity being established on the compromised host.
+
+![Persistence User Creation](images/persistence-user-creation.png)
+
+Further analysis revealed that the newly created `support` account was subsequently added to the **`Administrators`** group. This granted the account elevated privileges on the Windows host and significantly increased its ability to maintain access and perform privileged actions.
+
+![Persistence Admin Group](images/persistence-admin-group.png)
+
+The sequence of events established a clear relationship between the authentication activity and the creation of a privileged account:
+
+```text
+Failed Administrator Logons
+          ↓
+Successful Authentication
+          ↓
+support Account Created
+          ↓
+support Added to Administrators
+          ↓
+Privileged Persistent Access
+```
+
+This activity provided evidence of a persistence mechanism based on the creation of a new privileged user account. The combination of the account creation and subsequent administrative group membership made the `support` account an important artifact for detection and incident response.
+
+---
