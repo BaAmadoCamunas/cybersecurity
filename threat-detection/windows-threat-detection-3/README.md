@@ -311,3 +311,59 @@ Suspicious Processes
 ```
 
 These indicators provide a practical starting point for detection rules, threat hunting and retrospective analysis of Windows telemetry in environments where similar post-compromise activity may occur.
+
+---
+
+# 5. Findings
+
+The investigation reconstructed a sequence of post-compromise activity across the Windows host by correlating Sysmon and Windows Security telemetry.
+
+The analysis identified evidence consistent with the following attack progression:
+
+```text
+Initial Compromise
+       ↓
+C2 Component Deployment
+       ↓
+External C2 Communication
+       ↓
+Administrator Authentication Attempts
+       ↓
+Support Account Creation
+       ↓
+Administrative Privilege Assignment
+       ↓
+Multiple Persistence Mechanisms
+       ↓
+Potential Continued Access
+```
+
+The investigation identified a suspicious archive named `URGENT!.zip`, followed by the presence of the `update.exe` executable within the user's `AppData\Roaming` directory. Network telemetry subsequently identified communication involving `route.m365officesync.workers.dev`. Together, these artifacts were consistent with the establishment of a C2 mechanism on the compromised host.
+
+Authentication telemetry then showed six failed login attempts against the `Administrator` account before successful authentication. Following this activity, the `support` account was created and subsequently added to the `Administrators` group, providing the newly created account with elevated privileges.
+
+Additional persistence mechanisms were identified through Windows services and scheduled tasks. The `Data Protection Service` was associated with the Nessie malware, while the `AmazonSync` scheduled task was associated with the Troy malware.
+
+The investigation also examined suspicious activity associated with user-logon execution. Odin was identified with `C:\Windows\explorer.exe` as its parent process, while the Kitten executable was located through Event Viewer evidence and subsequently validated through controlled execution.
+
+---
+
+## 5.1. Key Findings
+
+- **C2 infrastructure was identified:** the `update.exe` executable and `route.m365officesync.workers.dev` domain were associated with network activity consistent with command and control communication.
+
+- **Suspicious authentication activity was observed:** six failed login attempts against the `Administrator` account occurred before successful authentication.
+
+- **A backdoor user account was created:** the `support` account was created following the successful authentication activity.
+
+- **The backdoor account received administrative privileges:** the `support` account was added to the `Administrators` group, providing elevated access to the compromised host.
+
+- **Multiple persistence mechanisms were established:** the investigation identified both the `Data Protection Service` and the `AmazonSync` scheduled task as persistence mechanisms associated with separate malware artifacts.
+
+- **User-logon execution provided additional detection opportunities:** Odin was observed with `C:\Windows\explorer.exe` as its parent process, while Kitten was identified through Event Viewer evidence and validated through controlled execution.
+
+Overall, the investigation demonstrated that the compromise could be reconstructed by correlating authentication, account management, process creation, network communication, service creation, scheduled task activity and user-logon artifacts.
+
+From a SOC perspective, the findings highlight the importance of correlating multiple Windows telemetry sources rather than investigating individual events in isolation. The relationship between otherwise separate events provided a clearer picture of the post-compromise activity and the mechanisms used to maintain access to the host.
+
+---
