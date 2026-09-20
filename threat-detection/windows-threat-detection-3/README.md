@@ -264,3 +264,50 @@ These findings demonstrate the importance of correlating process creation and us
 
 ---
 
+# 4. Indicators of Compromise (IOCs)
+
+The investigation identified several artifacts that can be used as Indicators of Compromise (IOCs) for detecting similar activity on Windows systems.
+
+The identified indicators are summarized below.
+
+| Category | Indicator | Context |
+|---|---|---|
+| File | `URGENT!.zip` | Suspicious archive downloaded during the initial compromise |
+| File | `C:\Users\Administrator\AppData\Roaming\update.exe` | C2 malware executable identified on the compromised host |
+| Domain | `route.m365officesync.workers.dev` | External domain associated with network activity from the suspicious executable |
+| User Account | `support` | Unauthorized account created after successful authentication |
+| Privileged Group | `Administrators` | Group to which the `support` account was added |
+| Windows Service | `Data Protection Service` | Service created to maintain persistence for Nessie |
+| Scheduled Task | `AmazonSync` | Scheduled task created to maintain persistence for Troy |
+| Process | `Odin` | Suspicious executable investigated in relation to user-logon activity |
+| Process | `Kitten` | Suspicious executable identified and validated through controlled execution |
+
+These indicators should be considered together with their associated timestamps, process relationships, authentication events and network activity rather than treated as isolated artifacts.
+
+Particular attention should be given to the combination of suspicious executables, unexpected account creation, privilege escalation, service creation, scheduled task creation and external network communication. Correlating these artifacts can provide stronger evidence of compromise than any single indicator in isolation.
+
+The following IOC categories were identified during the investigation:
+
+```text
+Files
+ ├── URGENT!.zip
+ └── update.exe
+
+Network
+ └── route.m365officesync.workers.dev
+
+Account
+ └── support
+       ↓
+   Administrators
+
+Persistence
+ ├── Data Protection Service
+ └── AmazonSync
+
+Suspicious Processes
+ ├── Odin
+ └── Kitten
+```
+
+These indicators provide a practical starting point for detection rules, threat hunting and retrospective analysis of Windows telemetry in environments where similar post-compromise activity may occur.
