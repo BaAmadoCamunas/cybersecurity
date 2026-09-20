@@ -192,3 +192,75 @@ Scheduled Task Persistence
 ```
 
 The identification of multiple independent persistence mechanisms demonstrates how a threat actor can establish redundant methods of maintaining access to a compromised Windows host. Detecting service creation and scheduled task activity is therefore an important component of post-compromise Windows monitoring.
+
+---
+
+## 3.4. Persistence via Run Keys and Startup
+
+The investigation then examined persistence mechanisms associated with Windows user logon activity, focusing on artifacts that could allow malicious programs to execute when a user logs into the system.
+
+The analysis focused on the artifacts available in:
+
+```plaintext
+C:\Users\Administrator\Desktop\Practice\Task 5\
+```
+
+The first artifact investigated was the **Odin** executable. Sysmon process creation evidence was examined to identify the parent process associated with its execution.
+
+The analysis identified:
+
+```plaintext
+C:\Windows\explorer.exe
+```
+
+as the parent process of Odin.
+
+![Odin Parent Process](images/odin-parent-process.png)
+
+![Odin Parent Process](images/odin.png)
+
+
+The relationship between `explorer.exe` and the Odin process was considered relevant when investigating user-logon persistence. Processes launched through mechanisms associated with user logon can inherit `explorer.exe` as their parent process, making process creation telemetry useful for identifying suspicious execution.
+
+The Odin executable was subsequently executed in the controlled lab environment to validate the identified artifact. The program produced the following output:
+
+```text
+Done doing bad stuff!
+```
+
+![Odin Execution Output](images/odin-execution-output.png)
+
+
+The investigation then identified another suspicious artifact associated with the **Kitten** malware. Event Viewer evidence was used to locate the executable before it was manually executed in the controlled environment.
+
+![Kitten Malware Location](images/kitten-malware-location.png)
+
+
+The identified Kitten executable was subsequently executed from the command line to validate the artifact and observe its behavior. The challenge-specific output has been intentionally omitted from this report.
+
+![Kitten Execution](images/kitten-execution.png)
+
+
+The user-logon persistence investigation can therefore be summarized as:
+
+```text
+User Logon Activity
+        ↓
+explorer.exe
+        ↓
+ Odin
+        ↓
+Suspicious Execution
+
+
+Event Viewer Evidence
+        ↓
+Kitten Executable Located
+        ↓
+Controlled Execution
+```
+
+These findings demonstrate the importance of correlating process creation and user-logon activity when investigating persistence on Windows systems. A suspicious process launched in the context of a user session may provide valuable evidence when combined with additional telemetry such as Sysmon process creation events, file creation events and registry activity.
+
+---
+
