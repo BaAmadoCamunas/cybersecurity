@@ -583,3 +583,9 @@ Overall, the investigation strengthened practical skills in Windows event analys
 
 - Windows Event Viewer
 - Command Prompt (CMD)
+
+---
+
+# 9. Disclaimer
+
+This analysis was performed in a controlled laboratory environment provided by TryHackMe for educational purposes only.
