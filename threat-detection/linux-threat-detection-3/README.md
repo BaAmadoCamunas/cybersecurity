@@ -205,7 +205,7 @@ The `@reboot` directive configures the associated command to run when the cron s
 
 ![Cron audit evidence](images/cron-persistence-audit.png)
 
-![Cron reboot entry](images/cron-reboot-persistence.png)
+![Cron reboot entry](images/persisted-binaries-execution.png)
 
 
 This configuration is a significant persistence indicator because it schedules an executable to run automatically during startup. The presence of the entry does not prove that a reboot occurred during the investigation or that the executable successfully ran at startup.
