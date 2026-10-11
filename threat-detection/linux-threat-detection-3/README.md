@@ -315,3 +315,91 @@ The findings also highlight the importance of monitoring access to sensitive con
 
 No passwords, challenge flags or other sensitive credential values are included in this report.
 
+---
+
+# 5. Findings
+
+The investigation identified multiple security-relevant events and configuration artifacts associated with potential command injection, credential exposure, privilege escalation attempts and persistence mechanisms.
+
+The findings below summarize the observed activity and its potential security implications. Each conclusion is limited to the evidence available during the investigation.
+
+| ID | Finding | Evidence | Assessment |
+|---|---|---|---|
+| F-01 | Potential command injection | The application executed an appended `whoami` command and returned `svctrypingme`. | Confirmed command execution through application input |
+| F-02 | Potential reverse shell activity | A `socat` reverse shell command was tested and suspicious activity associated with `10.14.105.255` was identified in the investigation. | Reverse shell activity requires further corroboration |
+| F-03 | Credential exposure | Testing confirmed that the application returned a password associated with the environment file investigation. | Credential exposure confirmed; the password is excluded from this report |
+| F-04 | Privilege escalation attempt | The `su root` command was identified during the investigation. | Attempt observed; successful privilege escalation unconfirmed |
+| F-05 | systemd persistence indicator | `/etc/systemd/system/tux.service` referenced `/var/lib/misc/tux`. | Configuration observed; automatic execution and legitimacy require verification |
+| F-06 | Cron-based persistence | The root crontab contained `@reboot /usr/sbin/phoenix`. | Startup execution configured; execution following an actual reboot not established |
+| F-07 | Potential account persistence | The account `Koichi` was identified in account creation activity. | Account creation observed; authorization and privileged group membership require verification |
+| F-08 | Potential SSH-based persistence | Audit records referenced `/root/.ssh/authorized_keys`. | File reference observed; unauthorized key modification or use unconfirmed |
+
+---
+
+## 5.1. Overall Assessment
+
+The investigation identified evidence of command execution through application input and confirmed that the application could return a sensitive password. These observations indicate a security risk involving command execution and credential exposure.
+
+---
+
+# 6. Mitigation Recommendations
+
+Based on the investigation findings, the following measures are recommended to reduce the risk of command injection, credential exposure, privilege escalation and persistence on Linux systems.
+
+---
+
+## 6.1 Prevent Command Injection
+
+- Avoid passing user-controlled input directly to shell commands.
+- Use secure APIs, parameterized execution and strict input validation.
+- Run application services with minimal privileges.
+- Monitor application processes for unexpected shell execution and suspicious child processes.
+
+---
+
+## 6.2 Protect Sensitive Credentials
+
+- Remove exposed credentials from application files and source code.
+- Restrict access to sensitive configuration files using appropriate ownership and permissions.
+- Rotate credentials confirmed to have been exposed.
+- Use a secrets management solution and prevent applications from returning sensitive values.
+
+---
+
+## 6.3 Strengthen Privilege Management
+
+- Apply the principle of least privilege to users and services.
+- Review `sudo` permissions and privileged group membership.
+- Monitor `su`, `sudo`, authentication failures and changes in effective user identity.
+- Investigate suspicious attempts to access privileged accounts.
+
+---
+
+## 6.4 Detect Persistence Mechanisms
+
+- Validate the legitimacy of `/etc/systemd/system/tux.service` and `/var/lib/misc/tux`.
+- Review the root crontab entry `@reboot /usr/sbin/phoenix`.
+- Monitor changes to systemd services, cron jobs and executable files.
+- Implement file integrity monitoring for sensitive system configuration paths.
+
+---
+
+## 6.5 Secure Accounts and SSH Access
+
+- Verify the legitimacy and privileges of the `Koichi` account.
+- Review `/root/.ssh/authorized_keys` for unauthorized changes.
+- Monitor account creation, privileged group membership changes and SSH authentication activity.
+- Restrict direct root SSH access where operationally appropriate.
+
+---
+
+## 6.6 Improve Monitoring and Incident Response
+
+- Centralize audit, authentication, application and system service logs.
+- Correlate process execution, authentication events, network activity and configuration changes.
+- Preserve relevant evidence before modifying a potentially compromised system.
+- Investigate suspicious artifacts before removing them to avoid disrupting legitimate services or destroying forensic evidence.
+- Document confirmed findings, potential impact and remaining uncertainties.
+
+These recommendations prioritize secure command execution, credential protection, least-privilege access, persistence detection and effective log correlation.
+
