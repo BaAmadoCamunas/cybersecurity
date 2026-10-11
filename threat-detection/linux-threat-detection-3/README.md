@@ -84,9 +84,7 @@ The audit log at `/home/ubuntu/scenario/audit.log` was examined for events assoc
 
 The investigation identified activity associated with the IP address `10.14.105.255`. This address was retained as an investigative indicator. Its precise role in the suspected activity requires correlation with the relevant process execution records and, where available, network telemetry.
 
-![Audit log evidence](images/privilege-env-credential-exposure-1.png)
-
-![Audit log evidence](images/privilege-env-credential-exposure-2.png)
+![Audit log evidence](images/auditd-reverse-shell-evidence.png)
 
 ---
 
