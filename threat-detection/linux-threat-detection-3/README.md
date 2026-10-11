@@ -219,7 +219,7 @@ The investigation identified two startup-related artifacts:
 - A systemd service configuration referencing `/var/lib/misc/tux`.
 - A root crontab entry configuring `/usr/sbin/phoenix` to execute at reboot.
 
-Both artifacts warrant further investigation to determine their legitimacy, origin, and operational status. Validation should include examining file ownership and permissions, reviewing executable metadata, checking service enablement and correlating configuration changes with process execution records.
+Both artifacts warrant further investigation to determine their legitimacy, origin and operational status. Validation should include examining file ownership and permissions, reviewing executable metadata, checking service enablement and correlating configuration changes with process execution records.
 
 ---
 
