@@ -263,7 +263,7 @@ The account creation event and the reference to `/root/.ssh/authorized_keys` are
 
 To validate the suspected activity, an analyst should correlate account creation timestamps, privileged group membership, file modification records, SSH authentication events and any available baseline of authorized keys. This would help distinguish legitimate administration from unauthorized changes.
 
---
+---
 
 ## 3.5 Targeted Attacks and Threat Detection Recap
 
@@ -282,4 +282,36 @@ The investigation highlights several defensive priorities:
 
 The observations documented in this section provide the technical basis for the consolidated indicators, findings and mitigation recommendations presented in the following sections.
 
+---
+
+# 4. Indicators of Compromise (IOCs)
+
+The investigation identified several indicators and system artifacts associated with potentially suspicious activity. These include a network address, account-related activity, executable paths, persistence configurations and access to sensitive application data.
+
+The indicators listed below should be interpreted in the context of the investigation. Some represent observed artifacts, while others require further validation before they can be classified as confirmed indicators of compromise.
+
+| Indicator / Artifact | Category | Description | Assessment |
+|---|---|---|---|
+| `10.14.105.255` | IP Address | Address associated with suspicious activity investigated in the audit records. | Requires further correlation |
+| `svctrypingme` | Account / Execution Context | Username returned after an appended shell command was executed through the application. | Observed |
+| `su root` | Command | Command associated with an attempt to switch to the root account. | Attempt observed; success unconfirmed |
+| `.env.local` | Sensitive File | Environment configuration file accessed using `cat`, potentially exposing credentials. | Access observed; credential exposure validated through application testing |
+| `/etc/systemd/system/tux.service` | systemd Configuration | Service definition referencing `/var/lib/misc/tux`. | Persistence-related artifact |
+| `/var/lib/misc/tux` | Executable Path | Executable referenced by the `tux.service` configuration. | Requires file analysis |
+| `/usr/sbin/phoenix` | Executable Path | Program configured in the root crontab to execute at reboot. | Persistence configuration observed |
+| `@reboot /usr/sbin/phoenix` | Cron Configuration | Root cron entry configured to execute the specified program during startup. | Persistence mechanism configured |
+| `Koichi` | User Account | Account identified in connection with account creation activity. | Account creation observed; authorization requires verification |
+| `/root/.ssh/authorized_keys` | SSH Configuration | File referenced in audit records during the investigation of possible SSH-based persistence. | File reference observed; unauthorized modification unconfirmed |
+
+---
+
+## 4.1. IOC Assessment
+
+The artifacts above provide starting points for further investigation and detection engineering. Their presence alone does not establish that every associated file, account, command or address is malicious.
+
+The IP address should be correlated with process execution and network telemetry to establish its role in the suspected activity. The systemd service, cron entry, executable files, account creation event and SSH authorized keys should be reviewed against an established system baseline and legitimate administrative activity.
+
+The findings also highlight the importance of monitoring access to sensitive configuration files and preventing credentials from being exposed through application functionality.
+
+No passwords, challenge flags or other sensitive credential values are included in this report.
 
