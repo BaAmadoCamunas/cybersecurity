@@ -39,9 +39,9 @@ The objective is to develop practical threat detection and investigation skills 
 
 | Project | Environment | Focus Areas |
 |---|---|---|
-| [Detecting Web Shells](./detecting-web-shells/README.md) | Linux / Apache / WordPress | Apache log analysis, web shell detection, suspicious command execution, file upload activity, IOC identification and post-compromise reconnaissance. |
-| [Windows Threat Detection 3: Command, Persistence & Impact](./windows-threat-detection-3/README.md) | Windows | Windows Security and Sysmon log analysis, C2 detection, suspicious authentication, privileged account creation and persistence mechanisms. |
-| [Linux Threat Detection and Incident Investigation](./linux-threat-detection/README.md) | Linux | Audit log analysis, command injection, credential exposure, privilege escalation attempts, systemd and cron persistence and SSH-related investigation. |
+| Detecting Web Shells | Linux / Apache / WordPress | Apache log analysis, web shell detection, suspicious command execution, file upload activity, IOC identification and post-compromise reconnaissance. |
+| Windows Threat Detection 3: Command, Persistence & Impact | Windows | Windows Security and Sysmon log analysis, C2 detection, suspicious authentication, privileged account creation and persistence mechanisms. |
+| Linux Threat Detection and Incident Investigation | Linux | Audit log analysis, command injection, credential exposure, privilege escalation attempts, systemd and cron persistence and SSH-related investigation. |
 
 ---
 
