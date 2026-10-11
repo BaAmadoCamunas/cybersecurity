@@ -403,3 +403,25 @@ Based on the investigation findings, the following measures are recommended to r
 
 These recommendations prioritize secure command execution, credential protection, least-privilege access, persistence detection and effective log correlation.
 
+---
+
+# 7. Lessons Learned
+
+This investigation highlighted several key lessons for Linux threat detection and incident response:
+
+- **Correlate multiple evidence sources:** application behavior, audit logs, authentication events and system configuration files provide a more complete picture when analyzed together.
+- **Validate command injection risks:** user-controlled input can lead to unintended command execution when passed insecurely to shell commands.
+- **Protect sensitive credentials:** applications must not expose passwords or secrets through responses, configuration files or debug functionality.
+- **Investigate persistence mechanisms:** systemd services and cron jobs can be used to maintain access and should be reviewed for unauthorized changes.
+- **Monitor account and SSH changes:** unexpected account creation, privilege assignments and modifications to SSH authorized keys may indicate attempts to establish persistent access.
+- **Distinguish evidence from assumptions:** observed activity should be documented separately from suspected intent or unconfirmed outcomes. For example, an attempted privilege escalation does not prove that elevated access was obtained.
+- **Apply defense in depth:** least-privilege access, secure coding practices, centralized logging and file integrity monitoring help reduce risk and improve detection.
+
+The investigation reinforced the importance of combining technical evidence with careful analysis to identify suspicious activity, assess potential impact and recommend appropriate defensive measures.
+
+--- 
+
+# 8. Tools Used
+
+- **Linux**
+
