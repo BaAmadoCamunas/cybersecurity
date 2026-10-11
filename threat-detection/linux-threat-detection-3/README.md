@@ -4,7 +4,7 @@
 
 This report documents a Linux security investigation focused on identifying suspicious activity associated with potential system compromise. The analysis examines host-level artifacts, command execution, privilege escalation attempts and persistence mechanisms to reconstruct relevant post-compromise activity.
 
-The investigation follows a threat detection approach, correlating audit records, authentication logs, application behavior, and system configuration artifacts to identify potentially unauthorized actions and assess their security implications.
+The investigation follows a threat detection approach, correlating audit records, authentication logs, application behavior and system configuration artifacts to identify potentially unauthorized actions and assess their security implications.
 
 The scope of the investigation includes:
 
