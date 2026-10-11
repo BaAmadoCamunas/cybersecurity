@@ -1,5 +1,7 @@
 # Linux Threat Detection and Incident Investigation
 
+---
+
 # 1. Scenario Overview
 
 This report documents a Linux security investigation focused on identifying suspicious activity associated with potential system compromise. The analysis examines host-level artifacts, command execution, privilege escalation attempts and persistence mechanisms to reconstruct relevant post-compromise activity.
