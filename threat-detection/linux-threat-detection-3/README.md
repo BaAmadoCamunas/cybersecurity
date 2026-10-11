@@ -155,7 +155,7 @@ The contents of the environment file were subsequently validated through testing
 
 The investigation identified credential discovery activity, an attempt to switch to the root account and access to an environment configuration file. These behaviors are relevant to privilege escalation investigations because exposed credentials may enable unauthorized access to privileged accounts.
 
-However, a successful privilege escalation has not been established by the evidence described here. Confirmation would require additional records, such as successful authentication events, changes in effective user identity or audit events demonstrating privileged command execution.
+Although the application test confirmed that a password could be retrieved, the available evidence does not establish that the credentials were successfully used to obtain root privileges. Confirmation of successful privilege escalation would require additional evidence, such as successful authentication records, a change in effective user identity or audit events demonstrating privileged command execution.
 
 ---
 
