@@ -13,6 +13,8 @@ The projects cover web shell detection, Windows Command and Control (C2) activit
 
 The objective is to develop practical threat detection and investigation skills while demonstrating how security telemetry supports evidence-based findings and defensive recommendations.
 
+---
+
 ## Repository Structure
 
     threat-detection/
@@ -31,7 +33,7 @@ The objective is to develop practical threat detection and investigation skills 
     │
     └── README.md
 
---
+---
 
 ## Write-Ups
 
@@ -59,10 +61,10 @@ The objective is to develop practical threat detection and investigation skills 
 
 ## Tools Used
 
-- **Linux:** command-line investigation, log analysis and system configuration review.
-- **Apache:** web server access log analysis and investigation of suspicious HTTP activity.
-- **WordPress:** investigation of web application activity and suspected web shell deployment.
-- **Windows Event Viewer:** examination of Windows Security and Sysmon event logs.
+- **Linux**
+- **Apache**
+- **WordPress**
+- **Windows Event Viewer**
 - **Command Prompt (CMD):** command-line investigation and controlled artifact validation.
 
 
