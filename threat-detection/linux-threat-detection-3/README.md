@@ -425,3 +425,9 @@ The investigation reinforced the importance of combining technical evidence with
 
 - **Linux**
 
+---
+
+# 9. Disclaimer
+This analysis was performed in a controlled laboratory environment provided by TryHackMe for educational purposes only.
+
+
