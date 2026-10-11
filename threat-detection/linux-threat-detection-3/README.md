@@ -143,9 +143,11 @@ a1=.env.local
 
 This evidence indicates that the `cat .env.local` command was executed. Environment files can contain sensitive configuration values, including credentials, API keys and connection strings.
 
-![Environment file access evidence](images/privilege-env-credential-exposure.png)
+![Environment file access evidence](images/privilege-env-credential-exposure-1.png)
 
-The execution event does not, by itself, establish the contents of the file or prove that a particular credential was successfully recovered. Any potentially exposed credentials should be treated as sensitive and excluded from public reporting.
+The contents of the environment file were subsequently validated through testing in the application, which returned the password and confirmed that sensitive credentials were exposed. This finding demonstrates the potential impact of insecure credential storage and the risk of credential disclosure through application functionality (the password has been omitted from this report).
+
+![Environment file access evidence](images/privilege-env-credential-exposure-2.png)
 
 ---
 
